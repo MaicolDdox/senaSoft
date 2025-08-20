@@ -3,73 +3,108 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\Semillero;
+use App\Models\ProjectFase;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return view('container.projects.index');
+        $projects = Project::with(['semillero','director'])->get();
+        return view('projects.index', compact('projects'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        return view('container.projects.create');
+        $semilleros = Semillero::all();
+        return view('projects.create', compact('semilleros'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'semillero_id' => 'required|exists:semilleros,id',
+            'director_id' => 'required|exists:users,id',
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
+        ]);
+
+        $project = Project::create($request->all());
+
+        // Registrar la fase inicial
+        ProjectFase::create([
+            'project_id' => $project->id,
+            'nombre' => 'propuesta',
+            'fecha_inicio' => now(),
+        ]);
+
+        return redirect()->route('projects.index')->with('success', 'Proyecto creado correctamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Project $project)
     {
-        //
+        $project->load(['fases','integrantes','semillero','director']);
+        return view('projects.show', compact('project'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Project $project)
     {
-        return view('container.projects.edit', compact('project'));
+        $semilleros = Semillero::all();
+        return view('projects.edit', compact('project','semilleros'));
     }
-    
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request, Project $project)
     {
-        //
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
+        ]);
+
+        $project->update($request->all());
+
+        return redirect()->route('projects.index')->with('success', 'Proyecto actualizado correctamente.');
     }
 
-    public function report()
-    {
-        return view('container.projects.report');
-    }
-
-    public function advance(Project $project)
-    {
-        return view('container.projects.advance', compact('project'));
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Project $project)
     {
-        //
+        $project->delete();
+        return redirect()->route('projects.index')->with('success', 'Proyecto eliminado correctamente.');
+    }
+
+    // Avanzar fase (solo Director)
+    public function advance(Request $request, Project $project)
+    {
+        $fases = ['propuesta','analisis','diseño','desarrollo','prueba','implantacion'];
+
+        $faseActualIndex = array_search($project->fase_actual, $fases);
+
+        if ($faseActualIndex === false || $faseActualIndex === count($fases) - 1) {
+            return redirect()->back()->with('error', 'El proyecto ya está en la última fase.');
+        }
+
+        // cerrar fase actual
+        $faseActual = $project->fases()->where('nombre',$project->fase_actual)->latest()->first();
+        if ($faseActual && !$faseActual->fecha_fin) {
+            $faseActual->update(['fecha_fin' => now()]);
+        }
+
+        // avanzar a la siguiente
+        $nuevaFase = $fases[$faseActualIndex + 1];
+        $project->update(['fase_actual' => $nuevaFase]);
+
+        $project->fases()->create([
+            'nombre' => $nuevaFase,
+            'fecha_inicio' => now(),
+        ]);
+
+        return redirect()->route('projects.show',$project)->with('success', 'Proyecto avanzado a la fase: '.$nuevaFase);
+    }
+
+    // Reporte
+    public function report()
+    {
+        $projects = Project::with(['fases','semillero'])->get();
+        return view('projects.report', compact('projects'));
     }
 }

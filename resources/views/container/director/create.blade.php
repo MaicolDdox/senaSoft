@@ -1,12 +1,12 @@
 @extends('layouts.dashboard')
 @section('content')
 <div class="max-w-4xl mx-auto">
-    <!-- Reemplazando header básico con diseño SENA profesional -->
+    <!-- Reemplazando header Bootstrap con diseño SENA profesional -->
     <div class="mb-8">
         <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-3xl font-bold text-foreground mb-2">Registrar Aprendiz</h1>
-                <p class="text-muted-foreground">Registra un nuevo aprendiz en el sistema CEFA</p>
+                <h1 class="text-3xl font-bold text-foreground mb-2">Crear Nuevo Director</h1>
+                <p class="text-muted-foreground">Registra un nuevo director en el sistema CEFA</p>
             </div>
             <div class="flex items-center space-x-2">
                 <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
@@ -37,18 +37,18 @@
         </div>
     @endif
 
-    <!-- Reemplazando card simple con diseño SENA moderno -->
+    <!-- Reemplazando card Bootstrap con diseño SENA moderno -->
     <div class="bg-card rounded-lg shadow-sm border border-border overflow-hidden">
         <div class="px-6 py-4 border-b border-border bg-muted/30">
-            <h3 class="text-lg font-semibold text-foreground">Información del Aprendiz</h3>
-            <p class="text-sm text-muted-foreground">Complete todos los campos para registrar un nuevo aprendiz</p>
+            <h3 class="text-lg font-semibold text-foreground">Información del Director</h3>
+            <p class="text-sm text-muted-foreground">Complete los datos requeridos para crear el nuevo director</p>
         </div>
         
         <div class="p-6">
-            <form action="{{ route('aprendices.store') }}" method="POST" class="space-y-6">
+            <form action="{{ route('directores.store') }}" method="POST" class="space-y-6">
                 @csrf
 
-                <!-- Convirtiendo campos básicos a diseño SENA con iconos -->
+                <!-- Convirtiendo campos de formulario a diseño SENA -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Nombre -->
                     <div class="space-y-2">
@@ -56,7 +56,7 @@
                             <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                             </svg>
-                            <span>Nombre del Aprendiz</span>
+                            <span>Nombre del Director</span>
                         </label>
                         <input type="text" 
                                name="name" 
@@ -80,12 +80,11 @@
                                id="email"
                                class="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors duration-200 bg-background text-foreground placeholder-muted-foreground" 
                                value="{{ old('email') }}" 
-                               placeholder="aprendiz@cefa.edu.co"
+                               placeholder="director@cefa.edu.co"
                                required>
                     </div>
                 </div>
 
-                <!-- Contraseñas -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- Contraseña -->
                     <div class="space-y-2">
@@ -103,7 +102,7 @@
                                required>
                     </div>
 
-                    <!-- Confirmar contraseña -->
+                    <!-- Confirmar Contraseña -->
                     <div class="space-y-2">
                         <label for="password_confirmation" class="text-sm font-medium text-foreground flex items-center space-x-2">
                             <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -120,9 +119,9 @@
                     </div>
                 </div>
 
-                <!-- Reemplazando botones básicos con diseño SENA profesional -->
+                <!-- Reemplazando botones Bootstrap con diseño SENA -->
                 <div class="flex flex-col sm:flex-row justify-between items-center space-y-3 sm:space-y-0 sm:space-x-4 pt-6 border-t border-border">
-                    <a href="{{ route('aprendices.index') }}" 
+                    <a href="{{ route('directores.index') }}" 
                        class="w-full sm:w-auto bg-secondary hover:bg-secondary/80 text-secondary-foreground px-6 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center space-x-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
@@ -135,7 +134,7 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
                         </svg>
-                        <span>Registrar Aprendiz</span>
+                        <span>Crear Director</span>
                     </button>
                 </div>
             </form>
@@ -143,14 +142,14 @@
     </div>
 
     <!-- Agregando información adicional con diseño SENA -->
-    <div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+    <div class="mt-6 bg-primary/5 border border-primary/20 rounded-lg p-4">
         <div class="flex items-start space-x-3">
-            <svg class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 text-primary flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
             <div>
-                <h4 class="font-medium text-blue-800 mb-1">Información importante</h4>
-                <p class="text-sm text-blue-700">El aprendiz recibirá las credenciales de acceso por correo electrónico. Asegúrese de que la dirección de correo sea correcta y esté activa.</p>
+                <h4 class="font-medium text-primary mb-1">Información importante</h4>
+                <p class="text-sm text-primary/80">El director tendrá acceso completo al sistema de gestión de semilleros de investigación. Asegúrese de proporcionar un correo electrónico válido para el envío de credenciales.</p>
             </div>
         </div>
     </div>

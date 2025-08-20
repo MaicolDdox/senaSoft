@@ -7,59 +7,65 @@ use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return view('container.events.index');
+        $events = Event::all();
+        return view('events.index', compact('events'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        return view('container.events.create');
+        return view('events.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'titulo' => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
+            'fecha_inicio' => 'required|date',
+            'fecha_fin' => 'nullable|date|after_or_equal:fecha_inicio',
+        ]);
+
+        Event::create($request->all());
+
+        return redirect()->route('events.index')->with('success', 'Evento creado correctamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Event $event)
     {
-        //
+        return view('events.show', compact('event'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Event $event)
     {
-        return view('container.events.edit', compact('event'));
+        return view('events.edit', compact('event'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Event $event)
     {
-        //
+        $request->validate([
+            'titulo' => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
+            'fecha_inicio' => 'required|date',
+            'fecha_fin' => 'nullable|date|after_or_equal:fecha_inicio',
+        ]);
+
+        $event->update($request->all());
+
+        return redirect()->route('events.index')->with('success', 'Evento actualizado correctamente.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Event $event)
     {
-        //
+        $event->delete();
+        return redirect()->route('events.index')->with('success', 'Evento eliminado correctamente.');
+    }
+
+    // Vista de calendario
+    public function calendar()
+    {
+        $events = Event::all();
+        return view('events.calendar', compact('events'));
     }
 }

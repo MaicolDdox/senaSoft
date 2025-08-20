@@ -7,59 +7,54 @@ use Illuminate\Http\Request;
 
 class SemilleroController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return view('container.semilleros.index');
+        $semilleros = Semillero::paginate(10); // Puedes ajustar el número de elementos por página
+    return view('container.semilleros.index', compact('semilleros'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('container.semilleros.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'titulo' => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
+        ]);
+
+        Semillero::create($request->all());
+
+        return redirect()->route('semilleros.index')->with('success', 'Semillero creado correctamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Semillero $semillero)
     {
-        //
+        return view('container.semilleros.show', compact('semillero'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Semillero $semillero)
     {
         return view('container.semilleros.edit', compact('semillero'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Semillero $semillero)
     {
-        //
+        $request->validate([
+            'titulo' => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
+        ]);
+
+        $semillero->update($request->all());
+
+        return redirect()->route('semilleros.index')->with('success', 'Semillero actualizado correctamente.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Semillero $semillero)
     {
-        //
+        $semillero->delete();
+        return redirect()->route('semilleros.index')->with('success', 'Semillero eliminado correctamente.');
     }
 }
