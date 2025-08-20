@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Event;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class EventController extends Controller
+class IntegranteController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('container.events.index');
+        return view('container.integrantes.index');
     }
 
     /**
@@ -20,7 +20,7 @@ class EventController extends Controller
      */
     public function create()
     {
-        return view('container.events.create');
+        return view('container.integrantes.create');
     }
 
     /**
@@ -34,7 +34,7 @@ class EventController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Event $event)
+    public function show(User $integrante)
     {
         //
     }
@@ -42,15 +42,15 @@ class EventController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Event $event)
+    public function edit(User $integrante)
     {
-        return view('container.events.edit', compact('event'));
+        return view('container.integrantes.edit', compact('integrante'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Event $event)
+    public function update(Request $request, User $integrante)
     {
         //
     }
@@ -58,7 +58,7 @@ class EventController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Event $event)
+    public function destroy(User $integrante)
     {
         //
     }

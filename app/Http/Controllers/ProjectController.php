@@ -12,7 +12,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        //
+        return view('container.projects.index');
     }
 
     /**
@@ -20,7 +20,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        return view('container.projects.create');
     }
 
     /**
@@ -44,15 +44,25 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        return view('container.projects.edit', compact('project'));
     }
-
+    
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Project $project)
     {
         //
+    }
+
+    public function report()
+    {
+        return view('container.projects.report');
+    }
+
+    public function advance(Project $project)
+    {
+        return view('container.projects.advance', compact('project'));
     }
 
     /**

@@ -12,7 +12,7 @@ class SemilleroController extends Controller
      */
     public function index()
     {
-        //
+        return view('container.semilleros.index');
     }
 
     /**
@@ -20,7 +20,7 @@ class SemilleroController extends Controller
      */
     public function create()
     {
-        //
+        return view('container.semilleros.create');
     }
 
     /**
@@ -44,7 +44,7 @@ class SemilleroController extends Controller
      */
     public function edit(Semillero $semillero)
     {
-        //
+        return view('container.semilleros.edit', compact('semillero'));
     }
 
     /**
