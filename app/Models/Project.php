@@ -19,10 +19,11 @@ class Project extends Model
         'fecha_fin',
     ];
 
+
     // Un proyecto pertenece a un semillero
     public function semillero()
     {
-        return $this->belongsTo(Semillero::class);
+        return $this->belongsTo(Semillero::class, 'semillero_id');
     }
 
     // Un proyecto tiene un director (usuario)
@@ -37,17 +38,30 @@ class Project extends Model
         return $this->hasMany(ProjectFase::class);
     }
 
-    // Relación N:M con usuarios (integrantes y director)
     public function integrantes()
     {
-        return $this->belongsToMany(User::class, 'project_user')
-                    ->withPivot('rol')
-                    ->withTimestamps();
+        return $this->belongsToMany(User::class, 'project_user', 'project_id', 'user_id')
+            ->withPivot('rol'); // Si quieres acceder al rol del aprendiz en el proyecto
     }
+
 
     // Un proyecto puede tener eventos
     public function events()
     {
         return $this->hasMany(Event::class);
     }
+
+    protected static function booted()
+{
+    static::created(function ($project) {
+        Event::create([
+            'titulo' => "Proyecto: {$project->name}",
+            'descripcion' => "Creación del proyecto",
+            'fecha_inicio' => $project->created_at->format('Y-m-d'),
+            'fecha_fin' => $project->end_date,
+            'project_id' => $project->id,
+        ]);
+    });
+}
+
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SemilleroController;
 use App\Http\Controllers\AprendizController;
 use App\Http\Controllers\DirectorController;
+use App\Http\Controllers\ProjectIntegranteController;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 
@@ -31,29 +32,45 @@ Route::middleware(['auth'])->group(function () {
     // -------------------------
     Route::resource('semilleros', SemilleroController::class);
 
-    // -------------------------
-    // Rutas de Proyectos
-    // -------------------------
-    Route::resource('projects', ProjectController::class);
 
-    // -------------------------
+
+
+    /// -------------------------
     // Rutas de Fases de Proyecto
     // -------------------------
-    Route::get('projects/{project}/fases/create', [ProjectController::class, 'createFase'])
-        ->name('projects.fases.create');
-    Route::post('projects/{project}/fases', [ProjectController::class, 'storeFase'])
-        ->name('projects.fases.store');
-    Route::get('projects/{project}/fases/{fase}/edit', [ProjectController::class, 'editFase'])
-        ->name('projects.fases.edit');
-    Route::put('projects/{project}/fases/{fase}', [ProjectController::class, 'updateFase'])
-        ->name('projects.fases.update');
-    Route::delete('projects/{project}/fases/{fase}', [ProjectController::class, 'destroyFase'])
-        ->name('projects.fases.destroy');
+    Route::prefix('projects/{project}/fases')->group(function () {
+        Route::get('create', [ProjectController::class, 'createFase'])->name('projects.fases.create');
+        Route::post('/', [ProjectController::class, 'storeFase'])->name('projects.fases.store');
+        Route::get('{fase}/edit', [ProjectController::class, 'editFase'])->name('projects.fases.edit');
+        Route::put('{fase}', [ProjectController::class, 'updateFase'])->name('projects.fases.update');
+        Route::delete('{fase}', [ProjectController::class, 'destroyFase'])->name('projects.fases.destroy');
+    });
 
     // -------------------------
     // Rutas de Eventos
     // -------------------------
     Route::resource('events', EventController::class);
+
+    // -------------------------
+    // Rutas de Proyectos
+    // -------------------------
+    Route::resource('projects', ProjectController::class);
+    Route::post('projects/{project}/advance', [ProjectController::class, 'advance'])->name('projects.advance');
+
+
+    //asociar aprendices con proyectos
+    Route::get('/project-integrantes', [ProjectIntegranteController::class, 'index'])
+        ->name('project_integrantes.index');
+
+    Route::get('/project-integrantes/create', [ProjectIntegranteController::class, 'create'])
+        ->name('project_integrantes.create');
+
+    Route::post('/project-integrantes', [ProjectIntegranteController::class, 'store'])
+        ->name('project_integrantes.store');
+
+    Route::delete('/projects/{project}/aprendices/{aprendiz}', [ProjectIntegranteController::class, 'destroy'])
+    ->name('project.aprendices.destroy');
+
 
 
     // -------------------------

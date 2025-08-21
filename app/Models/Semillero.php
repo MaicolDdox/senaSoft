@@ -19,4 +19,16 @@ class Semillero extends Model
     {
         return $this->hasMany(Project::class);
     }
+
+    protected static function booted()
+{
+    static::created(function ($semillero) {
+        Event::create([
+            'titulo' => "Semillero: {$semillero->name}",
+            'descripcion' => "Creación del semillero",
+            'fecha_inicio' => $semillero->created_at->format('Y-m-d'),
+        ]);
+    });
+}
+
 }

@@ -10,15 +10,20 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-{
-    Schema::create('project_user', function (Blueprint $table) {
-        $table->id();
-        $table->foreignId('project_id')->constrained()->cascadeOnDelete();
-        $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-        $table->enum('rol', ['director','integrante'])->default('integrante');
-        $table->timestamps();
-    });
-}
+    {
+        Schema::create('project_user', function (Blueprint $table) {
+            $table->id();
+
+            // Relaciones con project y user
+            $table->foreignId('project_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+
+            // Relación con roles (Spatie)
+            $table->foreignId('rol')->constrained('roles')->onDelete('cascade');
+
+            $table->timestamps();
+        });
+    }
 
 
     /**

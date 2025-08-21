@@ -120,6 +120,7 @@ class RoleSeeder extends Seeder
         // Aprendiz asociado
         $rolAprendiz->givePermissionTo([
             'semilleros.index',
+            'project_integrantes.index',
             'projects.index',
             'events.index',
         ]);
