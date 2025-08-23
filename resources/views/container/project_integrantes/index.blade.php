@@ -96,26 +96,24 @@
                                     </div>
                                 </div>
                                 @can('project_integrantes.create')
-                                    {{-- Agregando botón eliminar con diseño SENA profesional --}}
+                                    {{-- Botón eliminar rediseñado con iconografía SENA --}}
                                     <form action="{{ route('project.aprendices.destroy', [$project->id, $aprendiz->id]) }}"
-                                        method="POST"
-                                        onsubmit="return confirm('¿Estás seguro de que deseas eliminar a {{ $aprendiz->name }} del proyecto {{ $project->nombre }}? Esta acción no se puede deshacer.');"
-                                        class="flex-shrink-0">
+                                        method="POST" class="inline"
+                                        onsubmit="return confirm('¿Estás seguro de que deseas eliminar a {{ $aprendiz->name }} del proyecto {{ $project->nombre }}? Esta acción no se puede deshacer.');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" title="Eliminar aprendiz del proyecto"
-                                            class="inline-flex items-center space-x-1 px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-md transition-all duration-200 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <button type="submit"
+                                            class="bg-red-100 hover:bg-red-200 text-red-700 p-2 rounded-lg transition-colors duration-200 group"
+                                            title="Eliminar semillero">
+                                            <svg class="w-4 h-4 group-hover:scale-110 transition-transform duration-200"
+                                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                             </svg>
-                                            <span>Eliminar</span>
                                         </button>
                                     </form>
                                 @endcan
-
                             </div>
-
                             @if ($loop->last)
                     </div>
             @endif
