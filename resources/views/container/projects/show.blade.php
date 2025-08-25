@@ -35,6 +35,7 @@
                     </div>
                 </div>
             </div>
+            
 
             <div class="p-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -60,7 +61,7 @@
                             <div>
                                 <p class="text-sm font-medium text-muted-foreground">Semillero</p>
                                 <p class="text-foreground font-semibold">
-                                    {{ $project->semillero->nombre ?? 'Sin semillero asignado' }}</p>
+                                    {{ $project->semillero->titulo ?? 'Sin semillero asignado' }}</p>
                             </div>
                         </div>
 

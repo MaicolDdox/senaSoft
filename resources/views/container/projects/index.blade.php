@@ -123,7 +123,6 @@
                                         </div>
                                         <div>
                                             <div class="text-sm font-medium text-foreground">{{ $project->nombre }}</div>
-                                            <div class="text-xs text-muted-foreground">ID: {{ $project->id }}</div>
                                         </div>
                                     </div>
                                 </td>

@@ -104,7 +104,7 @@
                                         @method('DELETE')
                                         <button type="submit"
                                             class="bg-red-100 hover:bg-red-200 text-red-700 p-2 rounded-lg transition-colors duration-200 group"
-                                            title="Eliminar semillero">
+                                            title="Eliminar aprendiz">
                                             <svg class="w-4 h-4 group-hover:scale-110 transition-transform duration-200"
                                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
