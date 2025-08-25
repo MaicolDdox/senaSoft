@@ -290,9 +290,9 @@
                         administran sus semilleros de investigación.
                     </p>
                     @guest
-                        <a href="{{ route('register') }}" 
+                        <a href="{{ route('login') }}" 
                            class="inline-flex items-center px-8 py-4 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
-                            Solicitar Acceso al Sistema
+                            Entrar al sistema
                         </a>
                     @endguest
                 </div>
