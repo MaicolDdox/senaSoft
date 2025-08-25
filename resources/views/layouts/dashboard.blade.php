@@ -363,7 +363,7 @@
                 @endif
 
                 <!-- Integrantes Section -->
-                @if (auth()->user()->can('project_integrantes.index'))
+                
                     <div class="mb-6">
                         <h3
                             class="sidebar-section-title text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
@@ -387,7 +387,7 @@
                         </ul>
                         <ul class="space-y-1">
                             {{-- Crear asociación de aprendices a proyecto --}}
-                            @can('project_integrantes.index')
+                            
                                 <li>
                                     <a href="{{ route('project_integrantes.index') }}"
                                         class="sidebar-item flex items-center px-4 py-3 text-sm rounded-lg {{ request()->routeIs('project_integrantes.create') ? 'active' : 'text-muted-foreground hover:text-foreground' }}">
@@ -399,10 +399,10 @@
                                         Lista De asociaciones
                                     </a>
                                 </li>
-                            @endcan
+                            
                         </ul>
                     </div>
-                @endif
+                
 
 
                 <!-- Eventos Section -->
