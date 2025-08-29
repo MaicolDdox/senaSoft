@@ -17,7 +17,10 @@ return new class extends Migration
         $table->text('descripcion')->nullable();
         $table->date('fecha_inicio');
         $table->date('fecha_fin')->nullable();
-        $table->foreignId('project_id')->nullable()->constrained()->nullOnDelete();
+        $table->foreignId('project_id')
+                  ->nullable()
+                  ->constrained()
+                  ->onDelete('cascade');  // cascada automática
         $table->timestamps();
     });
 }

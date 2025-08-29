@@ -13,18 +13,35 @@ class EventObserver
      */
     public function created(Event $event)
     {
+        // Hora real de creación del registro
+        $start = $event->created_at->copy()->timezone(config('app.timezone'));
+        $end = $start;
+
         // Crear en Google Calendar
         $googleEvent = GoogleEvent::create([
             'name' => $event->titulo,
             'description' => $event->descripcion,
-            'startDateTime' => Carbon::parse($event->fecha_inicio)->setTimezone(config('app.timezone')),
-            'endDateTime' => Carbon::parse($event->fecha_fin ?? $event->fecha_inicio)
-                                ->setTimezone(config('app.timezone'))
-                                ->addHour(),
+            'startDateTime' => $start,
+            'endDateTime' => $end,
         ]);
 
-        // Guardar el ID en la BD
+        // Guardar ID en BD
         $event->google_event_id = $googleEvent->id;
-        $event->saveQuietly(); // evitar bucles infinitos
+        $event->saveQuietly();
+    }
+
+
+    public function deleting(Event $event)
+    {
+        if ($event->google_event_id) {
+            try {
+                $googleEvent = \Spatie\GoogleCalendar\Event::find($event->google_event_id);
+                if ($googleEvent) {
+                    $googleEvent->delete();
+                }
+            } catch (\Exception $e) {
+                \Log::error("Error eliminando en Google Calendar: " . $e->getMessage());
+            }
+        }
     }
 }
