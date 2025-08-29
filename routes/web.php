@@ -82,6 +82,10 @@ Route::middleware(['auth'])->group(function () {
     // Rutas de Directores
     // -------------------------
     Route::resource('directores', DirectorController::class);
+
+
 });
+
+
 
 require __DIR__ . '/auth.php';

@@ -7,11 +7,21 @@ use Illuminate\Http\Request;
 
 class SemilleroController extends Controller
 {
-    public function index()
+    public function index(\Illuminate\Http\Request $request)
     {
-        $semilleros = Semillero::paginate(10); // Puedes ajustar el número de elementos por página
-    return view('container.semilleros.index', compact('semilleros'));
+        $q = trim($request->input('q', ''));
+
+        $semilleros = Semillero::when($q, function ($query) use ($q) {
+            $query->where('titulo', 'like', "%{$q}%")
+                ->orWhere('descripcion', 'like', "%{$q}%");
+        })
+            ->latest('created_at')
+            ->paginate(10)
+            ->appends(['q' => $q]);
+
+        return view('container.semilleros.index', compact('semilleros', 'q'));
     }
+
 
     public function create()
     {
