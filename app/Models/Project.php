@@ -10,6 +10,7 @@ class Project extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'semillero_id',
         'director_id',
         'nombre',
@@ -52,16 +53,22 @@ class Project extends Model
     }
 
     protected static function booted()
-{
-    static::created(function ($project) {
-        Event::create([
-            'titulo' => "Proyecto: {$project->name}",
-            'descripcion' => "Creación del proyecto",
-            'fecha_inicio' => $project->created_at->format('Y-m-d'),
-            'fecha_fin' => $project->end_date,
-            'project_id' => $project->id,
-        ]);
-    });
-}
+    {
+        static::created(function ($project) {
+            Event::create([
+                'titulo' => "Proyecto: {$project->nombre}",
+                'descripcion' => "Descripccion: {$project->descripcion}",
+                'fecha_inicio' => $project->created_at->format('Y-m-d'),
+                'fecha_fin' => $project->end_date,
+                'project_id' => $project->id,
+            ]);
+        });
 
+        static::deleted(function ($project) {
+            // Borrar los eventos asociados al proyecto
+            $project->events()->each(function ($event) {
+                $event->delete();
+            });
+        });
+    }
 }

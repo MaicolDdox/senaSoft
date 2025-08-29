@@ -142,13 +142,15 @@
         </div>
         <h3 class="text-xl font-semibold text-foreground mb-2">No hay proyectos registrados</h3>
         <p class="text-muted-foreground mb-6">Comienza creando tu primer proyecto de investigación</p>
-        <a href="{{ route('projects.create') }}"
-            class="inline-flex items-center space-x-2 px-6 py-3 bg-primary hover:bg-primary/90 text-white rounded-lg font-medium transition-all duration-200 shadow-sm hover:shadow-md">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-            </svg>
-            <span>Crear Proyecto</span>
-        </a>
+        @can('projects.create')
+            <a href="{{ route('projects.create') }}"
+                class="inline-flex items-center space-x-2 px-6 py-3 bg-primary hover:bg-primary/90 text-white rounded-lg font-medium transition-all duration-200 shadow-sm hover:shadow-md">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                <span>Crear Proyecto</span>
+            </a>
+        @endcan
     </div>
     @endforelse
     </div>

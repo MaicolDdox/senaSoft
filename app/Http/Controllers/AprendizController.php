@@ -9,7 +9,7 @@ class AprendizController extends Controller
 {
     public function index()
     {
-        $aprendices = User::role('aprendiz_asociado')->get();
+        $aprendices = User::role('aprendiz_asociado')->paginate(10);
         return view('container.integrantes.index', compact('aprendices'));
     }
 

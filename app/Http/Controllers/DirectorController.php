@@ -9,7 +9,7 @@ class DirectorController extends Controller
 {
     public function index()
     {
-        $directores = User::role('director_grupo')->get();
+        $directores = User::role('director_grupo')->paginate(10);
         return view('container.director.index', compact('directores'));
     }
 

@@ -14,18 +14,25 @@ class ProjectIntegranteController extends Controller
         $user = auth()->user();
 
         if ($user->hasRole('aprendiz_asociado')) {
+            // Solo los proyectos donde participa como integrante
             $projects = Project::with(['integrantes', 'director', 'semillero'])
                 ->whereHas('integrantes', function ($query) use ($user) {
                     $query->where('user_id', $user->id);
                 })
                 ->get();
+        } elseif ($user->hasRole('director_grupo')) {
+            // Solo los proyectos donde es director
+            $projects = Project::with(['integrantes', 'director', 'semillero'])
+                ->where('director_id', $user->id)
+                ->get();
         } else {
-            // Otros roles ven todos los proyectos
+            // Otros roles (ejemplo admin) ven todos
             $projects = Project::with(['integrantes', 'director', 'semillero'])->get();
         }
 
         return view('container.project_integrantes.index', compact('projects'));
     }
+
 
 
     public function create()

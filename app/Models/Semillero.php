@@ -24,10 +24,22 @@ class Semillero extends Model
 {
     static::created(function ($semillero) {
         Event::create([
-            'titulo' => "Semillero: {$semillero->name}",
-            'descripcion' => "Creación del semillero",
+            'titulo' => "Semillero: {$semillero->titulo}",
+            'descripcion' => "Descripccion: {$semillero->descripcion}",
             'fecha_inicio' => $semillero->created_at->format('Y-m-d'),
         ]);
+    });
+
+    static::deleted(function ($semillero) {
+        // Borrar eventos que tengan proyectos de este semillero
+        foreach ($semillero->projects as $project) {
+            $project->events()->each(function ($event) {
+                $event->delete();
+            });
+        }
+
+        // Si quieres que el semillero mismo también tenga un evento propio
+        Event::where('titulo', "Semillero: {$semillero->titulo}")->delete();
     });
 }
 

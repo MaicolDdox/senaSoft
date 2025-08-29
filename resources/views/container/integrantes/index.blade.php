@@ -15,14 +15,16 @@
                                 d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
                         </svg>
                     </div>
-                    <a href="{{ route('aprendices.create') }}"
-                        class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2 shadow-sm hover:shadow-md">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                        </svg>
-                        <span>Nuevo Aprendiz</span>
-                    </a>
+                    @can('integrantes.create')
+                        <a href="{{ route('aprendices.create') }}"
+                            class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2 shadow-sm hover:shadow-md">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                            <span>Nuevo Aprendiz</span>
+                        </a>
+                    @endcan
                 </div>
             </div>
         </div>
@@ -132,8 +134,8 @@
                                 <td colspan="4" class="px-6 py-12 text-center">
                                     <div class="flex flex-col items-center space-y-4">
                                         <div class="w-16 h-16 bg-muted rounded-full flex items-center justify-center">
-                                            <svg class="w-8 h-8 text-muted-foreground" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
+                                            <svg class="w-8 h-8 text-muted-foreground" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
                                             </svg>
@@ -143,15 +145,17 @@
                                                 registrados</h3>
                                             <p class="text-sm text-muted-foreground mb-4">Comienza registrando el primer
                                                 aprendiz en el sistema</p>
-                                            <a href="{{ route('aprendices.create') }}"
-                                                class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 inline-flex items-center space-x-2">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                                </svg>
-                                                <span>Registrar Primer Aprendiz</span>
-                                            </a>
+                                            @can('integrantes.create')
+                                                <a href="{{ route('aprendices.create') }}"
+                                                    class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 inline-flex items-center space-x-2">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                                    </svg>
+                                                    <span>Registrar Primer Aprendiz</span>
+                                                </a>
+                                            @endcan
                                         </div>
                                     </div>
                                 </td>
@@ -177,5 +181,13 @@
                 </div>
             </div>
         </div>
+    </div>
+
+     {{-- Paginación con diseño mejorado --}}
+    @if ($aprendices->hasPages())
+        <div class="mt-6">
+            {{ $aprendices->links() }}
+        </div>
+    @endif
     </div>
 @endsection

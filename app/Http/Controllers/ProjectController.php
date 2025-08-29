@@ -11,9 +11,21 @@ class ProjectController extends Controller
 {
     public function index()
     {
-        $projects = Project::with(['semillero', 'director'])->paginate(10);
+        $user = auth()->user();
+
+        if ($user->hasRole('director_grupo')) {
+            // Solo los proyectos donde el usuario es director
+            $projects = Project::with(['semillero', 'director'])
+                ->where('director_id', $user->id)
+                ->paginate(10);
+        } else {
+            // Los demás roles (ej: admin) ven todos los proyectos
+            $projects = Project::with(['semillero', 'director'])->paginate(10);
+        }
+
         return view('container.projects.index', compact('projects'));
     }
+
 
     public function create()
     {
@@ -24,10 +36,12 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => 'required|string|max:255',
+            'nombre' => 'required|string|max:255|unique:projects,nombre',
             'descripcion' => 'nullable|string',
             'semillero_id' => 'required|exists:semilleros,id',
             'fecha_fin' => 'nullable|date|after:today',
+        ], [
+            'nombre.unique' => 'Ya existe un proyecto con este nombre, por favor elige otro.',
         ]);
 
         Project::create([
@@ -42,6 +56,7 @@ class ProjectController extends Controller
 
         return redirect()->route('projects.index')->with('success', 'Proyecto creado correctamente.');
     }
+
 
 
     public function show(Project $project)
