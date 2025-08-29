@@ -70,14 +70,27 @@
         <div class="bg-card rounded-lg shadow-sm border border-border overflow-hidden">
             <div class="px-6 py-4 border-b border-border bg-muted/30">
                 <div class="flex items-center space-x-3">
-                    <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                        <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                        </svg>
-                    </div>
+                    
                     <div>
                         <h3 class="text-lg font-semibold text-foreground">Lista de Proyectos</h3>
+
+
+                        {{-- Buscador --}}
+                        <form id="searchFormProjects" action="{{ route('projects.index') }}" method="GET">
+                            <div class="relative">
+                                <input type="text" name="q" id="search" value="{{ request('q') }}"
+                                    placeholder="Buscar aprendiz..."
+                                    class="pl-10 pr-4 py-2 rounded-lg border border-border bg-background text-sm focus:ring-2 focus:ring-primary focus:outline-none w-64">
+                                <svg class="w-4 h-4 absolute left-3 top-2.5 text-muted-foreground" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
+                                </svg>
+                            </div>
+                        </form>
+
+
+
                         <p class="text-sm text-muted-foreground">{{ $projects->total() }} proyectos registrados</p>
                     </div>
                 </div>
@@ -107,7 +120,7 @@
                                 Acciones</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-card divide-y divide-border">
+                    <tbody id="projectsTable" class="bg-card divide-y divide-border">
                         @forelse($projects as $project)
                             <tr class="hover:bg-muted/30 transition-colors duration-150">
                                 {{-- Columna proyecto con avatar y información mejorada --}}
@@ -159,8 +172,8 @@
                                 <td class="px-6 py-4">
                                     <div class="text-sm text-foreground">
                                         <div class="flex items-center space-x-1 mb-1">
-                                            <svg class="w-3 h-3 text-muted-foreground" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
+                                            <svg class="w-3 h-3 text-muted-foreground" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                             </svg>
@@ -266,11 +279,79 @@
             </div>
         </div>
 
-        {{-- Paginación con diseño mejorado --}}
         @if ($projects->hasPages())
-            <div class="mt-6">
+            <div id="paginationProjects" class="mt-6">
                 {{ $projects->links() }}
             </div>
         @endif
-    </div>
-@endsection
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const input = document.getElementById('searchProjects');
+                const form = document.getElementById('searchFormProjects');
+                const table = document.getElementById('projectsTable');
+                const pagination = document.getElementById('paginationProjects');
+                let timer = null,
+                    controller = null;
+                const DEBOUNCE = 150;
+
+                if (!form || !input || !table) {
+                    console.warn('AJAX search: faltan IDs en projects (form/input/table)');
+                    return;
+                }
+
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    ajaxLoad(buildUrl());
+                });
+
+                function ajaxLoad(url) {
+                    if (controller) controller.abort();
+                    controller = new AbortController();
+
+                    fetch(url, {
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
+                            signal: controller.signal
+                        })
+                        .then(r => r.text())
+                        .then(html => {
+                            const doc = new DOMParser().parseFromString(html, 'text/html');
+                            const newTable = doc.getElementById('projectsTable');
+                            const newPagination = doc.getElementById('paginationProjects');
+
+                            if (newTable && table) table.innerHTML = newTable.innerHTML;
+                            if (pagination) pagination.innerHTML = newPagination ? newPagination.innerHTML : '';
+
+                            bindPaginationLinks();
+                        })
+                        .catch(err => {
+                            if (err.name !== 'AbortError') console.error('Error en ajaxLoad:', err);
+                        });
+                }
+
+                function buildUrl() {
+                    const params = new URLSearchParams(new FormData(form));
+                    const base = form.action || window.location.pathname;
+                    return `${base}?${params.toString()}`;
+                }
+
+                function bindPaginationLinks() {
+                    document.querySelectorAll('#paginationProjects a').forEach(a => {
+                        a.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            ajaxLoad(this.href);
+                        });
+                    });
+                }
+
+                input.addEventListener('input', () => {
+                    clearTimeout(timer);
+                    timer = setTimeout(() => ajaxLoad(buildUrl()), DEBOUNCE);
+                });
+
+                bindPaginationLinks();
+            });
+        </script>
+    @endsection

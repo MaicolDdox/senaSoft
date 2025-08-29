@@ -9,22 +9,37 @@ use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
-    public function index()
-    {
-        $user = auth()->user();
+    public function index(Request $request)
+{
+    $user = auth()->user();
+    $q = trim($request->input('q', ''));
 
-        if ($user->hasRole('director_grupo')) {
-            // Solo los proyectos donde el usuario es director
-            $projects = Project::with(['semillero', 'director'])
-                ->where('director_id', $user->id)
-                ->paginate(10);
-        } else {
-            // Los demás roles (ej: admin) ven todos los proyectos
-            $projects = Project::with(['semillero', 'director'])->paginate(10);
-        }
+    $query = Project::with(['semillero', 'director']);
 
-        return view('container.projects.index', compact('projects'));
+    if ($user->hasRole('director_grupo')) {
+        $query->where('director_id', $user->id);
     }
+
+    if ($q) {
+        $query->where(function ($sub) use ($q) {
+            $sub->where('nombre', 'like', "%{$q}%")
+                ->orWhere('fase_actual', 'like', "%{$q}%")
+                ->orWhereHas('semillero', function ($qSem) use ($q) {
+                    $qSem->where('titulo', 'like', "%{$q}%");
+                })
+                ->orWhereHas('director', function ($qDir) use ($q) {
+                    $qDir->where('name', 'like', "%{$q}%");
+                });
+        });
+    }
+
+    $projects = $query->latest('created_at')
+        ->paginate(10)
+        ->appends(['q' => $q]);
+
+    return view('container.projects.index', compact('projects', 'q'));
+}
+
 
 
     public function create()
