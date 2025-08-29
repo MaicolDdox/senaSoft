@@ -9,29 +9,37 @@ use Illuminate\Http\Request;
 class ProjectIntegranteController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
         $user = auth()->user();
+        $q = trim($request->input('q', ''));
+
+        $query = Project::with(['integrantes', 'director', 'semillero']);
 
         if ($user->hasRole('aprendiz_asociado')) {
-            // Solo los proyectos donde participa como integrante
-            $projects = Project::with(['integrantes', 'director', 'semillero'])
-                ->whereHas('integrantes', function ($query) use ($user) {
-                    $query->where('user_id', $user->id);
-                })
-                ->get();
+            $query->whereHas('integrantes', function ($sub) use ($user) {
+                $sub->where('user_id', $user->id);
+            });
         } elseif ($user->hasRole('director_grupo')) {
-            // Solo los proyectos donde es director
-            $projects = Project::with(['integrantes', 'director', 'semillero'])
-                ->where('director_id', $user->id)
-                ->get();
-        } else {
-            // Otros roles (ejemplo admin) ven todos
-            $projects = Project::with(['integrantes', 'director', 'semillero'])->get();
+            $query->where('director_id', $user->id);
         }
 
-        return view('container.project_integrantes.index', compact('projects'));
+        if ($q) {
+            $query->where(function ($sub) use ($q) {
+                $sub->where('nombre', 'like', "%{$q}%")
+                    ->orWhereHas('director', fn($d) => $d->where('name', 'like', "%{$q}%"))
+                    ->orWhereHas('semillero', fn($s) => $s->where('titulo', 'like', "%{$q}%"))
+                    ->orWhereHas('integrantes', fn($i) => $i->where('name', 'like', "%{$q}%"));
+            });
+        }
+
+        $projects = $query->latest('created_at')
+            ->paginate(5)
+            ->appends(['q' => $q]);
+
+        return view('container.project_integrantes.index', compact('projects', 'q'));
     }
+
 
 
 

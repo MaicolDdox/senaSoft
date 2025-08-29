@@ -10,6 +10,16 @@
                     <h1 class="text-3xl font-bold text-foreground mb-2">Proyectos con Aprendices</h1>
                     <p class="text-muted-foreground">Visualiza la asociación de aprendices en cada proyecto de investigación
                     </p>
+                    {{-- Buscador en tiempo real --}}
+                    <div class="px-6 py-4 border-b border-border bg-muted/30 mb-6">
+                        <form id="searchFormIntegrantes" action="{{ route('project_integrantes.index') }}" method="GET"
+                            class="flex items-center space-x-2">
+                            <input type="text" name="q" id="searchIntegrantes" value="{{ $q ?? '' }}"
+                                placeholder="Buscar proyectos, aprendices, semilleros o directores..."
+                                class="flex-1 px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                        </form>
+                    </div>
+
                 </div>
                 <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
                     <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -21,7 +31,7 @@
         </div>
 
         {{-- Transformando cards básicas en diseño moderno con grid --}}
-        <div class="space-y-6">
+        <div id="integrantesContainer" class="space-y-6">
             @forelse ($projects as $project)
                 <div
                     class="bg-card rounded-lg shadow-sm border border-border overflow-hidden hover:shadow-md transition-shadow duration-200">
@@ -178,4 +188,82 @@
         </div>
     @endif
     </div>
+
+    @if ($projects->hasPages())
+        <div id="paginationIntegrantes" class="mt-6">
+            {{ $projects->links() }}
+        </div>
+    @endif
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const input = document.getElementById('searchIntegrantes');
+            const form = document.getElementById('searchFormIntegrantes');
+            const container = document.getElementById('integrantesContainer');
+            const pagination = document.getElementById('paginationIntegrantes');
+            let timer = null,
+                controller = null;
+            const DEBOUNCE = 150;
+
+            if (!form || !input || !container) {
+                console.warn('AJAX search: faltan IDs en project_integrantes');
+                return;
+            }
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                ajaxLoad(buildUrl());
+            });
+
+            function ajaxLoad(url) {
+                if (controller) controller.abort();
+                controller = new AbortController();
+
+                fetch(url, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        signal: controller.signal
+                    })
+                    .then(r => r.text())
+                    .then(html => {
+                        const doc = new DOMParser().parseFromString(html, 'text/html');
+                        const newContainer = doc.getElementById('integrantesContainer');
+                        const newPagination = doc.getElementById('paginationIntegrantes');
+
+                        if (newContainer && container) container.innerHTML = newContainer.innerHTML;
+                        if (pagination) pagination.innerHTML = newPagination ? newPagination.innerHTML : '';
+
+                        bindPaginationLinks();
+                    })
+                    .catch(err => {
+                        if (err.name !== 'AbortError') console.error('Error en ajaxLoad:', err);
+                    });
+            }
+
+            function buildUrl() {
+                const params = new URLSearchParams(new FormData(form));
+                const base = form.action || window.location.pathname;
+                return `${base}?${params.toString()}`;
+            }
+
+            function bindPaginationLinks() {
+                document.querySelectorAll('#paginationIntegrantes a').forEach(a => {
+                    a.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        ajaxLoad(this.href);
+                    });
+                });
+            }
+
+            input.addEventListener('input', () => {
+                clearTimeout(timer);
+                timer = setTimeout(() => ajaxLoad(buildUrl()), DEBOUNCE);
+            });
+
+            bindPaginationLinks();
+        });
+    </script>
+
 @endsection
