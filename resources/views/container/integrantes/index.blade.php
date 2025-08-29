@@ -172,85 +172,93 @@
             </div>
         </div>
 
-        {{-- Info adicional --}}
+        {{-- Agregando información adicional con diseño SENA --}}
         <div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
             <div class="flex items-start space-x-3">
-                <!-- contenido -->
+                <svg class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div>
+                    <h4 class="font-medium text-blue-800 mb-1">Gestión de Aprendices</h4>
+                    <p class="text-sm text-blue-700">Los aprendices pueden acceder al sistema con sus credenciales para
+                        participar en grupos de semilleros de investigación y gestionar sus proyectos académicos.</p>
+                </div>
             </div>
         </div>
-    </div>
 
-    {{-- **CAMBIO: agregué id="pagination" alrededor de los links para que el JS lo encuentre** --}}
-    @if ($aprendices->hasPages())
-        <div id="pagination" class="mt-6">
-            {{ $aprendices->withQueryString()->links() }}
-        </div>
-    @endif
+        {{-- **CAMBIO: agregué id="pagination" alrededor de los links para que el JS lo encuentre** --}}
+        @if ($aprendices->hasPages())
+            <div id="pagination" class="mt-6">
+                {{ $aprendices->withQueryString()->links() }}
+            </div>
+        @endif
 
-    {{-- SCRIPT: debounce 150ms + previene submit del form (enter) --}}
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const input = document.getElementById('search');
-            const form = document.getElementById('searchForm');
-            const table = document.getElementById('aprendicesTable'); // **ID agregado**
-            const pagination = document.getElementById('pagination'); // **ID agregado**
-            let timer = null,
-                controller = null;
-            const DEBOUNCE = 150; // ms -> ajusta a 100 o 0 si quieres aún más "instantáneo"
+        {{-- SCRIPT: debounce 150ms + previene submit del form (enter) --}}
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const input = document.getElementById('search');
+                const form = document.getElementById('searchForm');
+                const table = document.getElementById('aprendicesTable'); // **ID agregado**
+                const pagination = document.getElementById('pagination'); // **ID agregado**
+                let timer = null,
+                    controller = null;
+                const DEBOUNCE = 150; // ms -> ajusta a 100 o 0 si quieres aún más "instantáneo"
 
-            // prevenir submit tradicional al presionar Enter
-            if (form) {
-                form.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    ajaxLoad(buildUrl());
-                });
-            }
-
-            function ajaxLoad(url) {
-                if (controller) controller.abort();
-                controller = new AbortController();
-
-                fetch(url, {
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest'
-                        },
-                        signal: controller.signal
-                    })
-                    .then(r => r.text())
-                    .then(html => {
-                        const doc = new DOMParser().parseFromString(html, 'text/html');
-                        const newTable = doc.getElementById('aprendicesTable');
-                        const newPagination = doc.getElementById('pagination');
-                        if (newTable && table) table.innerHTML = newTable.innerHTML;
-                        if (pagination) pagination.innerHTML = newPagination ? newPagination.innerHTML : '';
-                        bindPaginationLinks();
-                    })
-                    .catch(err => {
-                        if (err.name !== 'AbortError') console.error(err);
-                    });
-            }
-
-            function buildUrl() {
-                const params = new URLSearchParams(new FormData(form));
-                return `${form.action}?${params.toString()}`;
-            }
-
-            function bindPaginationLinks() {
-                document.querySelectorAll('#pagination a').forEach(a => {
-                    a.addEventListener('click', e => {
+                // prevenir submit tradicional al presionar Enter
+                if (form) {
+                    form.addEventListener('submit', (e) => {
                         e.preventDefault();
-                        ajaxLoad(a.href);
+                        ajaxLoad(buildUrl());
                     });
-                });
-            }
+                }
 
-            if (input) {
-                input.addEventListener('input', () => {
-                    clearTimeout(timer);
-                    timer = setTimeout(() => ajaxLoad(buildUrl()), DEBOUNCE);
-                });
-            }
-            bindPaginationLinks();
-        });
-    </script>
-@endsection
+                function ajaxLoad(url) {
+                    if (controller) controller.abort();
+                    controller = new AbortController();
+
+                    fetch(url, {
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
+                            signal: controller.signal
+                        })
+                        .then(r => r.text())
+                        .then(html => {
+                            const doc = new DOMParser().parseFromString(html, 'text/html');
+                            const newTable = doc.getElementById('aprendicesTable');
+                            const newPagination = doc.getElementById('pagination');
+                            if (newTable && table) table.innerHTML = newTable.innerHTML;
+                            if (pagination) pagination.innerHTML = newPagination ? newPagination.innerHTML : '';
+                            bindPaginationLinks();
+                        })
+                        .catch(err => {
+                            if (err.name !== 'AbortError') console.error(err);
+                        });
+                }
+
+                function buildUrl() {
+                    const params = new URLSearchParams(new FormData(form));
+                    return `${form.action}?${params.toString()}`;
+                }
+
+                function bindPaginationLinks() {
+                    document.querySelectorAll('#pagination a').forEach(a => {
+                        a.addEventListener('click', e => {
+                            e.preventDefault();
+                            ajaxLoad(a.href);
+                        });
+                    });
+                }
+
+                if (input) {
+                    input.addEventListener('input', () => {
+                        clearTimeout(timer);
+                        timer = setTimeout(() => ajaxLoad(buildUrl()), DEBOUNCE);
+                    });
+                }
+                bindPaginationLinks();
+            });
+        </script>
+    @endsection

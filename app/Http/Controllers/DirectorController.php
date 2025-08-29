@@ -7,11 +7,23 @@ use Illuminate\Http\Request;
 
 class DirectorController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $directores = User::role('director_grupo')->paginate(10);
-        return view('container.director.index', compact('directores'));
+        $q = trim($request->input('q', ''));
+
+        $directores = User::role('director_grupo')
+            ->when($q, function ($query) use ($q) {
+                $query->where('name', 'like', "%{$q}%")
+                    ->orWhere('email', 'like', "%{$q}%");
+            })
+            ->latest('created_at')
+            ->paginate(10)
+            ->appends(['q' => $q]);
+
+        return view('container.director.index', compact('directores', 'q'));
     }
+
+
 
     public function create()
     {

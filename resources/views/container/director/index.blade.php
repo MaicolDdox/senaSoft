@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 @section('content')
     <div class="max-w-7xl mx-auto">
-        <!-- Reemplazando header Bootstrap con diseño SENA profesional -->
+        <!-- header -->
         <div class="mb-8">
             <div class="flex items-center justify-between">
                 <div>
@@ -19,39 +19,25 @@
             </div>
         </div>
 
-        <!-- Convirtiendo mensaje de éxito a diseño SENA -->
-        @if (session('success'))
-            <div
-                class="mb-6 bg-primary/10 border border-primary/20 text-primary px-4 py-3 rounded-lg flex items-center space-x-3">
-                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span class="font-medium">{{ session('success') }}</span>
-            </div>
-        @endif
 
-        <!-- Reemplazando botón Bootstrap con diseño SENA -->
-        <div class="mb-6 flex justify-between items-center">
-            <div class="flex items-center space-x-4">
-                <div class="bg-card rounded-lg px-4 py-2 border border-border">
-                    <span class="text-sm text-muted-foreground">Total: </span>
-                    <span class="font-semibold text-foreground">{{ $directores->count() }} directores</span>
-                </div>
-            </div>
-            <a href="{{ route('directores.create') }}"
-                class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2 shadow-sm hover:shadow-md">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
-                <span>Crear Nuevo Director</span>
-            </a>
-        </div>
 
-        <!-- Convirtiendo tabla Bootstrap a diseño SENA moderno -->
+        <!-- tabla -->
         <div class="bg-card rounded-lg shadow-sm border border-border overflow-hidden">
             <div class="px-6 py-4 border-b border-border bg-muted/30">
                 <h3 class="text-lg font-semibold text-foreground">Lista de Directores</h3>
+                <!-- buscador -->
+                <form id="searchFormDirector" action="{{ route('directores.index') }}" method="GET" class="mb-6">
+                    <div class="relative">
+                        <input type="text" name="q" id="searchDirector" value="{{ request('q') }}"
+                            placeholder="Buscar director..."
+                            class="pl-10 pr-4 py-2 rounded-lg border border-border bg-background text-sm focus:ring-2 focus:ring-primary focus:outline-none w-64">
+                        <svg class="w-4 h-4 absolute left-3 top-2.5 text-muted-foreground" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
+                        </svg>
+                    </div>
+                </form>
                 <p class="text-sm text-muted-foreground">Gestiona y administra los directores del sistema</p>
             </div>
 
@@ -61,42 +47,35 @@
                         <tr>
                             <th
                                 class="px-6 py-4 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                                #
-                            </th>
+                                #</th>
                             <th
                                 class="px-6 py-4 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                                Director
-                            </th>
+                                Director</th>
                             <th
                                 class="px-6 py-4 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                                Correo Electrónico
-                            </th>
+                                Correo Electrónico</th>
                             <th
                                 class="px-6 py-4 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                                Acciones
-                            </th>
+                                Acciones</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-border">
+                    <tbody id="directoresTable" class="divide-y divide-border">
                         @forelse ($directores as $index => $director)
                             <tr class="hover:bg-muted/30 transition-colors duration-150">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center justify-center w-8 h-8 bg-primary/10 rounded-full">
-                                        <span class="text-sm font-medium text-primary">{{ $index + 1 }}</span>
-                                    </div>
+                                <td class="px-6 py-4 text-sm text-muted-foreground">{{ $index + 1 }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="px-6 py-4">
                                     <div class="flex items-center space-x-3">
-                                        <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor"
+                                        <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                                            <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                             </svg>
                                         </div>
                                         <div>
-                                            <div class="text-sm font-medium text-foreground">{{ $director->name }}</div>
-                                            <div class="text-xs text-muted-foreground">Director</div>
+                                            <p class="text-sm font-medium text-foreground">{{ $director->name }}</p>
+                                            <p class="text-xs text-muted-foreground">Director</p>
                                         </div>
                                     </div>
                                 </td>
@@ -182,11 +161,99 @@
         </div>
     </div>
 
-    {{-- Paginación con diseño mejorado --}}
     @if ($directores->hasPages())
-        <div class="mt-6">
+        <div id="paginationDirector" class="mt-6">
             {{ $directores->links() }}
         </div>
     @endif
-    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const input = document.getElementById('searchDirector');
+            const form = document.getElementById('searchFormDirector');
+            const table = document.getElementById('directoresTable');
+            const pagination = document.getElementById('paginationDirector');
+            let timer = null,
+                controller = null;
+            const DEBOUNCE = 150; // ms - ajusta a 100 o 0 si quieres aún más "instantáneo"
+
+            // seguridad: si falta algo, salimos y mostramos error en consola
+            if (!form || !input || !table) {
+                console.warn(
+                    'AJAX search: faltan elementos (form/input/table). Verifica IDs: searchFormDirector, searchDirector, directoresTable'
+                );
+                return;
+            }
+
+            // prevenir submit tradicional (Enter)
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                ajaxLoad(buildUrl());
+            });
+
+            function ajaxLoad(url) {
+                if (!url) return;
+                // abort previo si existe
+                if (controller) controller.abort();
+                controller = new AbortController();
+
+                fetch(url, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        signal: controller.signal
+                    })
+                    .then(r => r.text())
+                    .then(html => {
+                        const doc = new DOMParser().parseFromString(html, 'text/html');
+
+                        // buscamos los nodos en la respuesta
+                        const newTable = doc.getElementById('directoresTable');
+                        const newPagination = doc.getElementById('paginationDirector');
+
+                        if (newTable && table) table.innerHTML = newTable.innerHTML;
+                        if (pagination) pagination.innerHTML = newPagination ? newPagination.innerHTML : '';
+
+                        // volver a enlazar los links de paginación (para AJAX)
+                        bindPaginationLinks();
+                    })
+                    .catch(err => {
+                        if (err.name !== 'AbortError') {
+                            console.error('Error en ajaxLoad:', err);
+                        }
+                    });
+            }
+
+            function buildUrl() {
+                // FormData incluye el campo 'q'
+                const params = new URLSearchParams(new FormData(form));
+                // si action está vacío, toma location.pathname
+                const base = form.action || window.location.pathname;
+                return `${base}?${params.toString()}`;
+            }
+
+            function bindPaginationLinks() {
+                document.querySelectorAll('#paginationDirector a').forEach(a => {
+                    a.removeEventListener('click', handlePaginationClick); // evitar duplicados
+                    a.addEventListener('click', handlePaginationClick);
+                });
+            }
+
+            function handlePaginationClick(e) {
+                e.preventDefault();
+                const href = e.currentTarget.href;
+                if (href) ajaxLoad(href);
+            }
+
+            // input debounced (en "tiempo real" pero con protección)
+            input.addEventListener('input', () => {
+                clearTimeout(timer);
+                timer = setTimeout(() => ajaxLoad(buildUrl()), DEBOUNCE);
+            });
+
+            // enlazar links inicialmente
+            bindPaginationLinks();
+        });
+    </script>
 @endsection
