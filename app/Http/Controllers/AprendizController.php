@@ -7,11 +7,23 @@ use Illuminate\Http\Request;
 
 class AprendizController extends Controller
 {
-    public function index()
+    public function index(\Illuminate\Http\Request $request)
     {
-        $aprendices = User::role('aprendiz_asociado')->paginate(10);
-        return view('container.integrantes.index', compact('aprendices'));
+        $q = trim($request->input('q', ''));
+
+        $aprendices = User::role('aprendiz_asociado')
+            ->when($q, function ($query) use ($q) {
+                $query->where('name', 'like', "%{$q}%")
+                    ->orWhere('email', 'like', "%{$q}%");
+            })
+            ->latest('created_at')
+            ->paginate(10)
+            ->appends(['q' => $q]);
+
+        return view('container.integrantes.index', compact('aprendices', 'q'));
     }
+
+
 
     public function create()
     {
@@ -40,7 +52,7 @@ class AprendizController extends Controller
     public function edit($id)
     {
         $aprendiz = User::findOrFail($id);
-    return view('container.integrantes.edit', compact('aprendiz'));
+        return view('container.integrantes.edit', compact('aprendiz'));
     }
 
     public function update(Request $request, $id)
@@ -60,7 +72,7 @@ class AprendizController extends Controller
     public function destroy($id)
     {
         $aprendiz = User::findOrFail($id);
-    $aprendiz->delete();
-    return redirect()->route('aprendices.index')->with('success', 'Aprendiz eliminado correctamente.');
+        $aprendiz->delete();
+        return redirect()->route('aprendices.index')->with('success', 'Aprendiz eliminado correctamente.');
     }
 }
