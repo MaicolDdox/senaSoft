@@ -46,7 +46,8 @@ class ProjectIntegranteController extends Controller
     public function create()
     {
         // Traemos los proyectos y los aprendices
-        $projects = Project::all();
+        $projects = Project::where('director_id', auth()->id())->get();
+
 
         // Solo usuarios con rol "aprendiz_asociado"
         $aprendices = User::role('aprendiz_asociado')->get();

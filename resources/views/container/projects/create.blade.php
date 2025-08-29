@@ -111,7 +111,7 @@
                             </div>
                         </label>
                         <select id="semillero_id" name="semillero_id"
-                            class="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors duration-200"
+                            class="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors duration-200 bg-background"
                             required>
                             <option value="">Seleccione un semillero</option>
                             @forelse($semilleros as $semillero)
@@ -123,6 +123,14 @@
                                 <option disabled>No hay semilleros registrados</option>
                             @endforelse
                         </select>
+                        @error('semillero_id')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+
+                        @error('semillero_id')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+
 
                         @error('semillero_id')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -133,7 +141,8 @@
                     <div class="space-y-2">
                         <label for="fecha_fin" class="block text-sm font-medium text-foreground">
                             <div class="flex items-center space-x-2">
-                                <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
@@ -186,4 +195,53 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Select para proyectos (solo uno)
+            new TomSelect("#project_id", {
+                create: false,
+                searchField: ["text"], // 🔑 filtra en tiempo real mientras escribes
+                persist: false,
+                maxItems: 1,
+                sortField: {
+                    field: "text",
+                    direction: "asc"
+                },
+                placeholder: "Seleccione un proyecto...",
+                render: {
+                    option: function(data, escape) {
+                        return `<div class="px-3 py-2 hover:bg-gray-100 cursor-pointer">${escape(data.text)}</div>`;
+                    },
+                    item: function(data, escape) {
+                        return `<div class="px-2 py-1 bg-primary/10 rounded-md">${escape(data.text)}</div>`;
+                    }
+                }
+            });
+
+            // Select para aprendices (pueden ser varios)
+            new TomSelect("#integrantes", {
+                plugins: ["remove_button"],
+                create: false,
+                searchField: ["text"], // 🔑 activa el filtro al escribir
+                persist: false,
+                maxItems: null, // permite varios
+                sortField: {
+                    field: "text",
+                    direction: "asc"
+                },
+                placeholder: "Seleccione integrantes...",
+                render: {
+                    option: function(data, escape) {
+                        return `<div class="px-3 py-2 hover:bg-gray-100 cursor-pointer">${escape(data.text)}</div>`;
+                    },
+                    item: function(data, escape) {
+                        return `<div class="px-2 py-1 bg-primary/10 rounded-md">${escape(data.text)}</div>`;
+                    }
+                }
+            });
+        });
+    </script>
+
+
 @endsection

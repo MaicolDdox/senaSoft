@@ -1,6 +1,9 @@
 @extends('layouts.dashboard')
 
 @section('content')
+    <!-- TomSelect CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
+
     {{-- Reemplazando diseño básico con diseño SENA profesional --}}
     <div class="max-w-4xl mx-auto">
         {{-- Header mejorado con iconografía específica para asociación de integrantes --}}
@@ -62,6 +65,7 @@
                                 <span>Proyecto de Investigación</span>
                             </div>
                         </label>
+                        
                         <select name="project_id" id="project_id"
                             class="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors duration-200 bg-background"
                             required>
@@ -85,6 +89,8 @@
                                 <span>Aprendices</span>
                             </div>
                         </label>
+                        
+
                         <select name="integrantes[]" id="integrantes"
                             class="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors duration-200 bg-background"
                             multiple required size="8">
@@ -93,22 +99,7 @@
                                     {{ $aprendiz->name }} - {{ $aprendiz->email }}
                                 </option>
                             @endforeach
-                        </select>
-                        <div class="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                            <div class="flex items-start space-x-2">
-                                <svg class="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                <p class="text-sm text-blue-700">
-                                    <strong>Instrucciones:</strong> Mantén presionada la tecla <kbd
-                                        class="px-1 py-0.5 bg-blue-100 rounded text-xs">Ctrl</kbd>
-                                    (o <kbd class="px-1 py-0.5 bg-blue-100 rounded text-xs">Cmd</kbd> en Mac) para
-                                    seleccionar múltiples aprendices.
-                                </p>
-                            </div>
-                        </div>
+                        </select>                        
                     </div>
                 </div>
 
@@ -153,4 +144,34 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Select para proyectos (solo uno)
+            new TomSelect("#project_id", {
+                create: false,
+                sortField: {
+                    field: "text",
+                    direction: "asc"
+                },
+                placeholder: "Seleccione un proyecto..."
+            });
+
+            // Select para aprendices (pueden ser varios)
+            new TomSelect("#integrantes", {
+                plugins: ["remove_button"],
+                maxItems: null, // permite varios
+                sortField: {
+                    field: "text",
+                    direction: "asc"
+                },
+                placeholder: "Seleccione integrantes..."
+            });
+        });
+    </script>
+
+
+
+    <!-- TomSelect JS -->
+    <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
+
 @endsection
