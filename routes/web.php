@@ -84,6 +84,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('directores', DirectorController::class);
 
 
+    Route::get('/projects/{project}/fases/{fase}', [ProjectController::class, 'showFase'])
+    ->name('projects.fases.show');
+
 });
 
 

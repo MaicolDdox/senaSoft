@@ -165,4 +165,14 @@ class ProjectController extends Controller
         $projects = Project::with(['fases', 'semillero'])->get();
         return view('projects.report', compact('projects'));
     }
+
+    public function showFase(Project $project, ProjectFase $fase)
+    {
+        // asegurar que la fase pertenezca al proyecto
+        if ($fase->project_id !== $project->id) {
+            abort(404);
+        }
+
+        return view('container.projects.fases.show', compact('project', 'fase'));
+    }
 }
