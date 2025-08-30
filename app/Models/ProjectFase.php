@@ -12,6 +12,7 @@ class ProjectFase extends Model
     protected $fillable = [
         'project_id',
         'nombre',
+        'descripcion',
         'fecha_inicio',
         'fecha_fin',
     ];

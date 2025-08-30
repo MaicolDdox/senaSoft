@@ -10,35 +10,35 @@ use Illuminate\Http\Request;
 class ProjectController extends Controller
 {
     public function index(Request $request)
-{
-    $user = auth()->user();
-    $q = trim($request->input('q', ''));
+    {
+        $user = auth()->user();
+        $q = trim($request->input('q', ''));
 
-    $query = Project::with(['semillero', 'director']);
+        $query = Project::with(['semillero', 'director']);
 
-    if ($user->hasRole('director_grupo')) {
-        $query->where('director_id', $user->id);
+        if ($user->hasRole('director_grupo')) {
+            $query->where('director_id', $user->id);
+        }
+
+        if ($q) {
+            $query->where(function ($sub) use ($q) {
+                $sub->where('nombre', 'like', "%{$q}%")
+                    ->orWhere('fase_actual', 'like', "%{$q}%")
+                    ->orWhereHas('semillero', function ($qSem) use ($q) {
+                        $qSem->where('titulo', 'like', "%{$q}%");
+                    })
+                    ->orWhereHas('director', function ($qDir) use ($q) {
+                        $qDir->where('name', 'like', "%{$q}%");
+                    });
+            });
+        }
+
+        $projects = $query->latest('created_at')
+            ->paginate(10)
+            ->appends(['q' => $q]);
+
+        return view('container.projects.index', compact('projects', 'q'));
     }
-
-    if ($q) {
-        $query->where(function ($sub) use ($q) {
-            $sub->where('nombre', 'like', "%{$q}%")
-                ->orWhere('fase_actual', 'like', "%{$q}%")
-                ->orWhereHas('semillero', function ($qSem) use ($q) {
-                    $qSem->where('titulo', 'like', "%{$q}%");
-                })
-                ->orWhereHas('director', function ($qDir) use ($q) {
-                    $qDir->where('name', 'like', "%{$q}%");
-                });
-        });
-    }
-
-    $projects = $query->latest('created_at')
-        ->paginate(10)
-        ->appends(['q' => $q]);
-
-    return view('container.projects.index', compact('projects', 'q'));
-}
 
 
 
@@ -89,7 +89,7 @@ class ProjectController extends Controller
     public function update(Request $request, Project $project)
     {
         $request->validate([
-            'nombre' => 'required|string|max:255',
+            'nombre' => 'required|string|max:255|unique:projects,nombre',
             'descripcion' => 'nullable|string',
             'fecha_fin' => 'nullable|date|after_or_equal:' . $project->fecha_inicio,
         ]);
@@ -113,6 +113,7 @@ class ProjectController extends Controller
     {
         $request->validate([
             'fecha_fin' => 'required|date|after_or_equal:' . $project->fecha_inicio,
+            'descripcion' => 'nullable|string|max:500',
         ]);
 
         $fases = ['propuesta', 'analisis', 'diseño', 'desarrollo', 'prueba', 'implantacion'];
@@ -122,41 +123,40 @@ class ProjectController extends Controller
             return redirect()->back()->with('error', 'Fase actual inválida.');
         }
 
-        // Obtener la fase actual registrada en historial
+        // Cerrar la fase actual
         $faseActual = $project->fases()->where('nombre', $project->fase_actual)->latest()->first();
 
-        // ✅ Siempre cerrar la fase actual con la fecha enviada
         if ($faseActual && !$faseActual->fecha_fin) {
-            $faseActual->update(['fecha_fin' => $request->fecha_fin]);
+            $faseActual->update([
+                'fecha_fin'   => $request->fecha_fin,
+                'descripcion' => $request->descripcion, // se guarda la info del cierre
+            ]);
         }
 
-        // Si la fase actual NO es la última -> avanzar
+        // Avanzar si no es la última
         if ($faseActualIndex < count($fases) - 1) {
             $nuevaFase = $fases[$faseActualIndex + 1];
 
-            // actualizar en el proyecto
             $project->update(['fase_actual' => $nuevaFase]);
 
-            // crear nuevo registro en historial
             $project->fases()->create([
                 'nombre'       => $nuevaFase,
-                'fecha_inicio' => now(), // inicia en el momento del avance
+                'fecha_inicio' => now(),
+                'descripcion'  => null, // 👈 importante: empieza vacía
             ]);
 
             return redirect()->route('projects.show', $project)
                 ->with('success', 'Proyecto avanzado a la fase: ' . $nuevaFase);
         }
 
-        // ✅ Si ya está en la última fase, solo se cierra (sin crear nueva)
-        // Opcional: también puedes cerrar el proyecto
+        // Si ya es la última fase, cerrar proyecto
         $project->update([
-            'fecha_fin' => $request->fecha_fin // guarda la fecha de cierre del proyecto
+            'fecha_fin' => $request->fecha_fin,
         ]);
 
         return redirect()->route('projects.show', $project)
             ->with('success', 'Proyecto finalizado en la fase: ' . $project->fase_actual);
     }
-
 
 
     // Reporte

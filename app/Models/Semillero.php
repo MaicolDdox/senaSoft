@@ -12,6 +12,7 @@ class Semillero extends Model
     protected $fillable = [
         'titulo',
         'descripcion',
+        'imagen'
     ];
 
     // Un semillero tiene muchos proyectos

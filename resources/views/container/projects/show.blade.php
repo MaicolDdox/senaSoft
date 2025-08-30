@@ -35,7 +35,7 @@
                     </div>
                 </div>
             </div>
-            
+
 
             <div class="p-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -142,92 +142,98 @@
                 @endif
             </div>
         </div>
-        @can('projects.create')
-            {{-- Historial de fases rediseñado con tabla moderna --}}
-            <div class="bg-card rounded-lg shadow-sm border border-border overflow-hidden mb-6">
-                <div class="px-6 py-4 border-b border-border bg-muted/30">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                            <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-semibold text-foreground">Historial de Fases</h3>
-                            <p class="text-sm text-muted-foreground">Seguimiento del progreso del proyecto</p>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="p-6">
-                    @if ($project->fases->count() > 0)
-                        <div class="overflow-x-auto">
-                            <table class="w-full">
-                                <thead>
-                                    <tr class="border-b border-border">
-                                        <th class="text-left py-3 px-4 font-semibold text-foreground">Fase</th>
-                                        <th class="text-left py-3 px-4 font-semibold text-foreground">Fecha Inicio</th>
-                                        <th class="text-left py-3 px-4 font-semibold text-foreground">Fecha Fin</th>
-                                        <th class="text-left py-3 px-4 font-semibold text-foreground">Estado</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-border">
-                                    @foreach ($project->fases as $fase)
-                                        <tr class="hover:bg-muted/50 transition-colors duration-200">
-                                            <td class="py-4 px-4">
-                                                <div class="flex items-center space-x-3">
-                                                    <div
-                                                        class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                                                        <svg class="w-4 h-4 text-primary" fill="none"
-                                                            stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2"
-                                                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                        </svg>
-                                                    </div>
-                                                    <span
-                                                        class="font-medium text-foreground">{{ ucfirst($fase->nombre) }}</span>
-                                                </div>
-                                            </td>
-                                            <td class="py-4 px-4 text-muted-foreground">
-                                                {{ \Carbon\Carbon::parse($fase->fecha_inicio)->format('d/m/Y') }}
-                                            </td>
-                                            <td class="py-4 px-4 text-muted-foreground">
-                                                {{ $fase->fecha_fin ? \Carbon\Carbon::parse($fase->fecha_fin)->format('d/m/Y') : 'En curso' }}
-                                            </td>
-                                            <td class="py-4 px-4">
-                                                @if ($fase->fecha_fin)
-                                                    <span
-                                                        class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                        Completada
-                                                    </span>
-                                                @else
-                                                    <span
-                                                        class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                                        En progreso
-                                                    </span>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @else
-                        <div class="text-center py-12">
-                            <svg class="w-12 h-12 text-muted-foreground mx-auto mb-4" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                            </svg>
-                            <h3 class="text-lg font-medium text-foreground mb-2">Sin historial de fases</h3>
-                            <p class="text-muted-foreground">Aún no hay registro de fases para este proyecto.</p>
-                        </div>
-                    @endif
+        {{-- Historial de fases rediseñado con tabla moderna --}}
+        <div class="bg-card rounded-lg shadow-sm border border-border overflow-hidden mb-6">
+            <div class="px-6 py-4 border-b border-border bg-muted/30">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                        <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-foreground">Historial de Fases</h3>
+                        <p class="text-sm text-muted-foreground">Seguimiento del progreso del proyecto</p>
+                    </div>
                 </div>
             </div>
 
+            <div class="p-6">
+                @if ($project->fases->count() > 0)
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b border-border">
+                                    <th class="text-left py-3 px-4 font-semibold text-foreground">Fase</th>
+                                    <th class="text-left py-3 px-4 font-semibold text-foreground">Descripcion</th>
+                                    <th class="text-left py-3 px-4 font-semibold text-foreground">Fecha Inicio</th>
+                                    <th class="text-left py-3 px-4 font-semibold text-foreground">Fecha Fin</th>
+                                    <th class="text-left py-3 px-4 font-semibold text-foreground">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-border">
+                                @foreach ($project->fases as $fase)
+                                    <tr class="hover:bg-muted/50 transition-colors duration-200">
+                                        <td class="py-4 px-4">
+                                            <div class="flex items-center space-x-3">
+                                                <div
+                                                    class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                                                    <svg class="w-4 h-4 text-primary" fill="none"
+                                                        stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                </div>
+                                                <span
+                                                    class="font-medium text-foreground">{{ ucfirst($fase->nombre) }}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @if ($fase->descripcion)
+                                                <p class="text-sm text-muted-foreground mt-1">{{ $fase->descripcion }}</p>
+                                            @endif
+                                        </td>
+                                        <td class="py-4 px-4 text-muted-foreground">
+                                            {{ \Carbon\Carbon::parse($fase->fecha_inicio)->format('d/m/Y') }}
+                                        </td>
+                                        <td class="py-4 px-4 text-muted-foreground">
+                                            {{ $fase->fecha_fin ? \Carbon\Carbon::parse($fase->fecha_fin)->format('d/m/Y') : 'En curso' }}
+                                        </td>
+                                        <td class="py-4 px-4">
+                                            @if ($fase->fecha_fin)
+                                                <span
+                                                    class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                    Completada
+                                                </span>
+                                            @else
+                                                <span
+                                                    class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                    En progreso
+                                                </span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    <div class="text-center py-12">
+                        <svg class="w-12 h-12 text-muted-foreground mx-auto mb-4" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                        <h3 class="text-lg font-medium text-foreground mb-2">Sin historial de fases</h3>
+                        <p class="text-muted-foreground">Aún no hay registro de fases para este proyecto.</p>
+                    </div>
+                @endif
+            </div>
+        </div>
+        @can('projects.create')
             {{-- Botón para avanzar fase rediseñado --}}
             <div class="flex justify-between items-center">
                 <a href="{{ route('projects.index') }}"
@@ -277,6 +283,7 @@
                     </div>
                 </div>
 
+
                 <form action="{{ route('projects.advance', $project->id) }}" method="POST" class="p-6">
                     @csrf
                     <div class="mb-6">
@@ -292,7 +299,22 @@
                         <input type="date" id="fecha_fin" name="fecha_fin"
                             class="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors duration-200 bg-background"
                             required>
-                        <p class="mt-2 text-sm text-muted-foreground">Selecciona la fecha en que se completó la fase actual</p>
+                        <p class="mt-2 text-sm text-muted-foreground">Selecciona la fecha en que se completó la fase actual
+                        </p>
+                    </div>
+                    <div class="mb-6">
+                        <label for="descripcion" class="block text-sm font-medium text-foreground mb-2">
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                <span>Descripción de la fase actual</span>
+                            </div>
+                        </label>
+                        <textarea id="descripcion" name="descripcion" rows="3"
+                            class="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary/20 
+               focus:border-primary transition-colors duration-200 bg-background resize-none"></textarea>
                     </div>
 
                     <div class="flex justify-end space-x-3">
@@ -309,5 +331,6 @@
                 </form>
             </div>
         @endcan
+
     </div>
 @endsection

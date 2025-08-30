@@ -4,10 +4,26 @@
 <div class="max-w-4xl mx-auto">
     {{-- Header --}}
     <div class="mb-8 flex items-center justify-between">
-        <div>
-            <h1 class="text-3xl font-bold text-foreground mb-2">{{ $semillero->titulo }}</h1>
-            <p class="text-muted-foreground">Detalles completos del semillero de investigación</p>
+        <div class="flex items-center space-x-4">
+            {{-- Avatar de la imagen --}}
+            <div class="shrink-0">
+                @if($semillero->imagen)
+                    <img src="{{ asset('storage/' . $semillero->imagen) }}"
+                         alt="Imagen del semillero"
+                         class="w-20 h-20 rounded-full object-cover border-2 border-muted shadow-md">
+                @else
+                    <div class="w-20 h-20 rounded-full bg-muted flex items-center justify-center text-2xl font-bold text-muted-foreground shadow-md">
+                        {{ strtoupper(substr($semillero->titulo, 0, 1)) }}
+                    </div>
+                @endif
+            </div>
+
+            <div>
+                <h1 class="text-3xl font-bold text-foreground mb-2">{{ $semillero->titulo }}</h1>
+                <p class="text-muted-foreground">Detalles completos del semillero de investigación</p>
+            </div>
         </div>
+
         <a href="{{ route('semilleros.index') }}"
            class="bg-muted hover:bg-muted/80 text-foreground px-4 py-2 rounded-lg font-medium transition-all duration-200 shadow-sm flex items-center space-x-2">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

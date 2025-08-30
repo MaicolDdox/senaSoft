@@ -15,6 +15,7 @@ return new class extends Migration
         $table->id();
         $table->foreignId('project_id')->constrained()->cascadeOnDelete();
         $table->enum('nombre', ['propuesta','analisis','diseño','desarrollo','prueba','implantacion']);
+        $table->text('descripcion')->nullable();
         $table->date('fecha_inicio')->nullable();
         $table->date('fecha_fin')->nullable();
         $table->timestamps();
