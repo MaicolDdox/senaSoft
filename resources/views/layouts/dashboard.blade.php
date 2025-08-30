@@ -176,28 +176,17 @@
                     </div>
                 </div>
 
-                <!-- Enhanced user welcome section with better styling -->
-                <div class="bg-accent rounded-lg p-4">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                        </div>
-                        <div class="flex-1 min-w-0">
-                            <h2 class="text-sm font-semibold text-foreground truncate">{{ auth()->user()->name }}</h2>
-                            <p class="text-xs text-muted-foreground">
-                                {{ auth()->user()->roles->first()->name ?? 'Sin rol' }}</p>
-                        </div>
-                    </div>
-                </div>
+
             </div>
 
             <!-- Redesigned navigation menu with sections and improved UX -->
             <nav class="flex-1 p-4 overflow-y-auto">
                 <!-- Dashboard Section -->
                 <div class="mb-6">
+                    <h3
+                        class="sidebar-section-title text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+                        Home
+                    </h3>
                     <ul class="space-y-1">
                         <li>
                             <a href="{{ route('dashboard') }}"
@@ -298,8 +287,7 @@
                                 <li>
                                     <a href="{{ route('aprendices.index') }}"
                                         class="sidebar-item flex items-center px-4 py-3 text-sm rounded-lg {{ request()->routeIs('integrantes.index') ? 'active' : 'text-muted-foreground hover:text-foreground' }}">
-                                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
+                                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                         </svg>
@@ -363,46 +351,44 @@
                 @endif
 
                 <!-- Integrantes Section -->
-                
-                    <div class="mb-6">
-                        <h3
-                            class="sidebar-section-title text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-                            Integrantes
-                        </h3>
-                        <ul class="space-y-1">
-                            {{-- Crear asociación de aprendices a proyecto --}}
-                            @can('project_integrantes.create')
-                                <li>
-                                    <a href="{{ route('project_integrantes.create') }}"
-                                        class="sidebar-item flex items-center px-4 py-3 text-sm rounded-lg {{ request()->routeIs('project_integrantes.create') ? 'active' : 'text-muted-foreground hover:text-foreground' }}">
-                                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                        </svg>
-                                        Asociar Aprendices
-                                    </a>
-                                </li>
-                            @endcan
-                        </ul>
-                        <ul class="space-y-1">
-                            {{-- Crear asociación de aprendices a proyecto --}}
-                            
-                                <li>
-                                    <a href="{{ route('project_integrantes.index') }}"
-                                        class="sidebar-item flex items-center px-4 py-3 text-sm rounded-lg {{ request()->routeIs('project_integrantes.create') ? 'active' : 'text-muted-foreground hover:text-foreground' }}">
-                                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                        </svg>
-                                        Lista De asociaciones
-                                    </a>
-                                </li>
-                            
-                        </ul>
-                    </div>
-                
+
+                <div class="mb-6">
+                    <h3
+                        class="sidebar-section-title text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+                        Integrantes
+                    </h3>
+                    <ul class="space-y-1">
+                        {{-- Crear asociación de aprendices a proyecto --}}
+                        @can('project_integrantes.create')
+                            <li>
+                                <a href="{{ route('project_integrantes.create') }}"
+                                    class="sidebar-item flex items-center px-4 py-3 text-sm rounded-lg {{ request()->routeIs('project_integrantes.create') ? 'active' : 'text-muted-foreground hover:text-foreground' }}">
+                                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                    </svg>
+                                    Asociar Aprendices
+                                </a>
+                            </li>
+                        @endcan
+                    </ul>
+                    <ul class="space-y-1">
+                        {{-- Crear asociación de aprendices a proyecto --}}
+
+                        <li>
+                            <a href="{{ route('project_integrantes.index') }}"
+                                class="sidebar-item flex items-center px-4 py-3 text-sm rounded-lg {{ request()->routeIs('project_integrantes.create') ? 'active' : 'text-muted-foreground hover:text-foreground' }}">
+                                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                                Lista De asociaciones
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+
 
 
                 <!-- Eventos Section -->
