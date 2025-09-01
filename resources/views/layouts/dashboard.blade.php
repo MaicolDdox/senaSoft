@@ -19,6 +19,11 @@
     <!-- Added AOS library for animations -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
+    <!-- apexcharts script para los estilos -->
+    <link rel="stylesheet" href="./assets/vendor/apexcharts/dist/apexcharts.css">
+
+
+
     <!-- Updated to latest Tailwind CSS CDN with SENA color configuration -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -175,8 +180,6 @@
                         <p class="text-sm text-muted-foreground">Sistema de Gestión</p>
                     </div>
                 </div>
-
-
             </div>
 
             <!-- Redesigned navigation menu with sections and improved UX -->
@@ -385,7 +388,6 @@
                                 Lista De asociaciones
                             </a>
                         </li>
-
                     </ul>
                 </div>
 
@@ -549,18 +551,32 @@
                                 <p class="text-lg text-muted-foreground mb-6">Sistema de Gestión y Seguimiento de
                                     Grupos de Semilleros de Investigación</p>
                                 <div class="flex justify-center space-x-4">
-                                    @can('semilleros.create')
-                                        <a href="{{ route('semilleros.create') }}"
-                                            class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-medium transition-colors">
-                                            Crear Semillero
-                                        </a>
-                                    @endcan
-                                    @can('projects.create')
-                                        <a href="{{ route('projects.create') }}"
-                                            class="bg-secondary hover:bg-secondary/80 text-secondary-foreground px-6 py-3 rounded-lg font-medium transition-colors">
-                                            Nuevo Proyecto
-                                        </a>
-                                    @endcan
+                                    <div class="grid grid-cols-2 gap-6">
+
+                                        <!-- 1. Proyectos por fase -->
+                                        <div class="bg-white p-4 rounded shadow">
+                                            <h2 class="text-lg font-bold mb-2">Proyectos por Fase</h2>
+                                            <div id="chartProyectosFase"></div>
+                                        </div>
+
+                                        <!-- 2. Proyectos por mes -->
+                                        <div class="bg-white p-4 rounded shadow">
+                                            <h2 class="text-lg font-bold mb-2">Proyectos creados por Mes</h2>
+                                            <div id="chartProyectosMes"></div>
+                                        </div>
+
+                                        <!-- 3. Usuarios por rol -->
+                                        <div class="bg-white p-4 rounded shadow">
+                                            <h2 class="text-lg font-bold mb-2">Usuarios por Rol</h2>
+                                            <div id="chartUsuariosRol"></div>
+                                        </div>
+
+                                        <!-- 4. Eventos por mes -->
+                                        <div class="bg-white p-4 rounded shadow">
+                                            <h2 class="text-lg font-bold mb-2">Eventos por Mes</h2>
+                                            <div id="chartEventosMes"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -570,8 +586,12 @@
         </main>
     </div>
 
-    <!-- Simplified JavaScript - removed problematic AOS reinitializations and complex animations -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Simplified JavaScript - removed problematic AOS reinitializations and complex animations, JS DE APEXCHART -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script src="./assets/vendor/lodash/lodash.min.js"></script>
+
+
     <script>
         // Initialize AOS only once on page load
         AOS.init({
@@ -594,6 +614,68 @@
             });
         });
     </script>
+
+
+
+
+    <script>
+        // 1. Proyectos por Fase (donut)
+        var optionsFase = {
+            chart: {
+                type: 'donut'
+            },
+            series: @json(array_values($proyectosPorFase->toArray())),
+            labels: @json(array_keys($proyectosPorFase->toArray())),
+        };
+        new ApexCharts(document.querySelector("#chartProyectosFase"), optionsFase).render();
+
+        // 2. Proyectos por Mes (línea)
+        var optionsMes = {
+            chart: {
+                type: 'line'
+            },
+            series: [{
+                name: 'Proyectos',
+                data: @json(array_values($proyectosPorMes->toArray()))
+            }],
+            xaxis: {
+                categories: @json(array_keys($proyectosPorMes->toArray()))
+            }
+        };
+        new ApexCharts(document.querySelector("#chartProyectosMes"), optionsMes).render();
+
+        // 3. Usuarios por Rol (barras horizontales)
+        var optionsRoles = {
+            chart: {
+                type: 'bar'
+            },
+            series: [{
+                name: 'Usuarios',
+                data: @json(array_values($usuariosPorRol->toArray()))
+            }],
+            xaxis: {
+                categories: @json(array_keys($usuariosPorRol->toArray()))
+            }
+        };
+        new ApexCharts(document.querySelector("#chartUsuariosRol"), optionsRoles).render();
+
+        // 4. Eventos por Mes (área)
+        var optionsEventos = {
+            chart: {
+                type: 'area'
+            },
+            series: [{
+                name: 'Eventos',
+                data: @json(array_values($eventosPorMes->toArray()))
+            }],
+            xaxis: {
+                categories: @json(array_keys($eventosPorMes->toArray()))
+            }
+        };
+        new ApexCharts(document.querySelector("#chartEventosMes"), optionsEventos).render();
+    </script>
+
 </body>
+
 
 </html>

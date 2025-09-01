@@ -9,6 +9,7 @@ use App\Http\Controllers\DirectorController;
 use App\Http\Controllers\ProjectIntegranteController;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
+use App\Http\Controllers\dashboardController;
 
 
 Route::get('/', function () {
@@ -86,6 +87,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/projects/{project}/fases/{fase}', [ProjectController::class, 'showFase'])
     ->name('projects.fases.show');
+
+    Route::get('/dashboard', [dashboardController::class, 'index'])->name('dashboard');
 
 });
 
