@@ -5,8 +5,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <!-- Updated title and meta for CEFA system -->
-        <title>CEFA</title>
+        <title>CEFA - Sistema de Gestión de Semilleros de Investigación</title>
         <meta name="description" content="Sistema de información para la gestión y seguimiento de grupos de semilleros de investigación del Centro de Formación Agroindustrial CEFA">
+
+        <link rel="icon" href="/favicon.ico" sizes="any">
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -17,11 +21,102 @@
         
         <!-- Added Tailwind CSS CDN for immediate styling -->
         <script src="https://cdn.tailwindcss.com"></script>
-        <script src="{{ asset('js/dashboardTailwind.js') }}"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            // SENA color palette
+                            primary: {
+                                DEFAULT: '#00A65D',
+                                foreground: '#FFFFFF'
+                            },
+                            background: '#FFFFFF',
+                            foreground: '#000000',
+                            muted: {
+                                DEFAULT: '#F8F9FA',
+                                foreground: '#6B7280'
+                            },
+                            accent: {
+                                DEFAULT: '#F0F9F4',
+                                foreground: '#00A65D'
+                            },
+                            card: {
+                                DEFAULT: '#FFFFFF',
+                                foreground: '#000000'
+                            },
+                            border: '#E5E7EB',
+                            secondary: {
+                                DEFAULT: '#F3F4F6',
+                                foreground: '#374151'
+                            }
+                        },
+                        fontFamily: {
+                            'sans': ['Instrument Sans', 'system-ui', 'sans-serif'],
+                            'serif': ['Playfair Display', 'serif'],
+                            'body': ['Source Sans Pro', 'system-ui', 'sans-serif']
+                        }
+                    }
+                }
+            }
+        </script>
 
         <!-- Added custom CSS for enhanced animations and effects -->
-        <link rel="stylesheet" href="{{ asset('css/welcome.css') }}">
+        <style>
+            .floating-animation {
+                animation: float 6s ease-in-out infinite;
+            }
+            
+            @keyframes float {
+                0%, 100% { transform: translateY(0px); }
+                50% { transform: translateY(-10px); }
+            }
+            
+            .pulse-glow {
+                animation: pulse-glow 2s infinite;
+            }
+            
+            @keyframes pulse-glow {
+                0%, 100% { box-shadow: 0 0 20px rgba(0, 166, 93, 0.3); }
+                50% { box-shadow: 0 0 30px rgba(0, 166, 93, 0.5); }
+            }
+            
+            .gradient-text {
+                background: linear-gradient(135deg, #00A65D, #00C46A);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            
+            .card-hover-effect {
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            
+            .card-hover-effect:hover {
+                transform: translateY(-8px) scale(1.02);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            }
+            
+            .typewriter {
+                overflow: hidden;
+                border-right: 2px solid #00A65D;
+                white-space: nowrap;
+                animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+            }
+            
+            @keyframes typing {
+                from { width: 0; }
+                to { width: 100%; }
+            }
+            
+            @keyframes blink-caret {
+                from, to { border-color: transparent; }
+                50% { border-color: #00A65D; }
+            }
+        </style>
 
+        <!-- Styles -->
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="bg-background text-foreground antialiased min-h-screen font-body">
         <!-- Professional header with SENA branding -->

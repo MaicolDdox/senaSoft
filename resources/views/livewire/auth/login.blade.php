@@ -1,14 +1,101 @@
-<div class="min-h-screen login-gradient font-body antialiased">
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Iniciar Sesión - CEFA | Sistema de Gestión de Semilleros</title>
+    <meta name="description" content="Accede al Sistema de Gestión de Semilleros de Investigación - CEFA">
+
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+    <!-- SENA Design System fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600|playfair-display:700|source-sans-pro:400,500,600" rel="stylesheet" />
+
+    <!-- Tailwind CSS with SENA configuration -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#00A65D',
+                            foreground: '#FFFFFF',
+                            50: '#F0F9F4',
+                            100: '#DCF2E4',
+                            500: '#00A65D',
+                            600: '#009952',
+                            700: '#007A42'
+                        },
+                        background: '#FFFFFF',
+                        foreground: '#000000',
+                        muted: {
+                            DEFAULT: '#F8F9FA',
+                            foreground: '#6B7280'
+                        },
+                        accent: {
+                            DEFAULT: '#F0F9F4',
+                            foreground: '#00A65D'
+                        },
+                        card: {
+                            DEFAULT: '#FFFFFF',
+                            foreground: '#000000'
+                        },
+                        border: '#E5E7EB'
+                    },
+                    fontFamily: {
+                        'sans': ['Instrument Sans', 'system-ui', 'sans-serif'],
+                        'serif': ['Playfair Display', 'serif'],
+                        'body': ['Source Sans Pro', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .login-gradient {
+            background: linear-gradient(135deg, #00A65D 0%, #00C46A 50%, #F0F9F4 100%);
+        }
+        
+        .login-card {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 20px 40px rgba(0, 166, 93, 0.1);
+        }
+        
+        .floating-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .input-focus {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .input-focus:focus {
+            border-color: #00A65D;
+            box-shadow: 0 0 0 3px rgba(0, 166, 93, 0.1);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen login-gradient font-body antialiased">
     <div class="min-h-screen flex items-center justify-center p-4">
         <div class="w-full max-w-md">
             <!-- Enhanced login card with SENA branding -->
             <div class="login-card rounded-2xl p-8 border border-white/20">
                 <!-- SENA Logo and Branding -->
                 <div class="text-center mb-8">
-                    <div
-                        class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 floating-animation">
+                    <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 floating-animation">
                         <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
                         </svg>
                     </div>
                     <h1 class="text-2xl font-bold text-foreground mb-2">CEFA</h1>
@@ -33,15 +120,20 @@
                         </label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <svg class="h-5 w-5 text-muted-foreground" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+                                <svg class="h-5 w-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
                                 </svg>
                             </div>
-                            <input wire:model="email" type="email" id="email" required autofocus
-                                autocomplete="email" placeholder="correo@ejemplo.com"
-                                class="input-focus w-full pl-10 pr-4 py-3 border border-border rounded-lg bg-background text-foreground placeholder-muted-foreground focus:outline-none" />
+                            <input
+                                wire:model="email"
+                                type="email"
+                                id="email"
+                                required
+                                autofocus
+                                autocomplete="email"
+                                placeholder="correo@ejemplo.com"
+                                class="input-focus w-full pl-10 pr-4 py-3 border border-border rounded-lg bg-background text-foreground placeholder-muted-foreground focus:outline-none"
+                            />
                         </div>
                     </div>
 
@@ -52,30 +144,35 @@
                         </label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <svg class="h-5 w-5 text-muted-foreground" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                <svg class="h-5 w-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                                 </svg>
                             </div>
-                            <input wire:model="password" type="password" id="password" required
-                                autocomplete="current-password" placeholder="Ingresa tu contraseña"
-                                class="input-focus w-full pl-10 pr-4 py-3 border border-border rounded-lg bg-background text-foreground placeholder-muted-foreground focus:outline-none" />
+                            <input
+                                wire:model="password"
+                                type="password"
+                                id="password"
+                                required
+                                autocomplete="current-password"
+                                placeholder="Ingresa tu contraseña"
+                                class="input-focus w-full pl-10 pr-4 py-3 border border-border rounded-lg bg-background text-foreground placeholder-muted-foreground focus:outline-none"
+                            />
                         </div>
                     </div>
 
                     <!-- Remember Me -->
                     <div class="flex items-center justify-between">
                         <label class="flex items-center">
-                            <input type="checkbox" wire:model="remember"
-                                class="w-4 h-4 text-primary bg-background border-border rounded focus:ring-primary focus:ring-2">
+                            <input type="checkbox" wire:model="remember" class="w-4 h-4 text-primary bg-background border-border rounded focus:ring-primary focus:ring-2">
                             <span class="ml-2 text-sm text-muted-foreground">Recordarme</span>
                         </label>
                     </div>
 
                     <!-- Enhanced submit button with SENA styling -->
-                    <button type="submit"
-                        class="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+                    <button
+                        type="submit"
+                        class="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                    >
                         Iniciar Sesión
                     </button>
                 </form>
@@ -92,4 +189,7 @@
             </div>
         </div>
     </div>
-</div>
+
+    @fluxScripts
+</body>
+</html>
