@@ -153,12 +153,9 @@
                                 <td class="px-6 py-4">
                                     @php
                                         $faseColors = [
-                                            'propuesta' => 'bg-blue-100 text-blue-800',
-                                            'analisis' => 'bg-yellow-100 text-yellow-800',
-                                            'diseño' => 'bg-purple-100 text-purple-800',
-                                            'desarrollo' => 'bg-orange-100 text-orange-800',
-                                            'prueba' => 'bg-pink-100 text-pink-800',
-                                            'implantacion' => 'bg-green-100 text-green-800',
+                                            'formulacion' => 'bg-blue-100 text-blue-800',
+                                            'ejecucion' => 'bg-orange-100 text-orange-800',
+                                            'finalizacion y divulgacion' => 'bg-green-100 text-green-800',
                                         ];
                                         $colorClass = $faseColors[$project->fase_actual] ?? 'bg-gray-100 text-gray-800';
                                     @endphp

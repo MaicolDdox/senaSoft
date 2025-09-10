@@ -14,7 +14,7 @@ return new class extends Migration
     Schema::create('project_fases', function (Blueprint $table) {
         $table->id();
         $table->foreignId('project_id')->constrained()->cascadeOnDelete();
-        $table->enum('nombre', ['propuesta','analisis','diseño','desarrollo','prueba','implantacion']);
+        $table->enum('nombre', ['formulacion', 'ejecucion', 'finalizacion y divulgacion'])->default('formulacion');
         $table->text('descripcion')->nullable();
         $table->date('fecha_inicio')->nullable();
         $table->date('fecha_fin')->nullable();

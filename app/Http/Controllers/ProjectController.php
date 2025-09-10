@@ -54,23 +54,31 @@ class ProjectController extends Controller
             'nombre' => 'required|string|max:255|unique:projects,nombre',
             'descripcion' => 'nullable|string',
             'semillero_id' => 'required|exists:semilleros,id',
-            'fecha_fin' => 'nullable|date|after:today',
-        ], [
-            'nombre.unique' => 'Ya existe un proyecto con este nombre, por favor elige otro.',
+            'fecha_fin' => 'required|date|after:today',
         ]);
 
-        Project::create([
+        // Crear el proyecto con fase inicial = formulacion
+        $project = Project::create([
             'nombre' => $request->nombre,
             'descripcion' => $request->descripcion,
             'semillero_id' => $request->semillero_id,
             'director_id' => auth()->id(),
-            'fase_actual' => 'propuesta', // siempre inicia en propuesta
-            'fecha_inicio' => now(), // se asigna automáticamente
+            'fase_actual' => 'formulacion',
+            'fecha_inicio' => now(),
             'fecha_fin' => $request->fecha_fin,
         ]);
 
-        return redirect()->route('projects.index')->with('success', 'Proyecto creado correctamente.');
+        // Crear el registro de la primera fase en la tabla project_fases
+        $project->fases()->create([
+            'nombre' => 'formulacion',
+            'fecha_inicio' => now(),
+            'descripcion' => 'Inicio del proyecto en fase de formulación',
+        ]);
+
+        return redirect()->route('projects.index')
+            ->with('success', 'Proyecto creado y fase inicial registrada exitosamente.');
     }
+
 
 
 
@@ -89,7 +97,7 @@ class ProjectController extends Controller
     public function update(Request $request, Project $project)
     {
         $request->validate([
-            'nombre' => 'required|string|max:255|unique:projects,nombre',
+            'nombre' => 'required|string|max:255|unique:projects,nombre,' . $project->id,
             'descripcion' => 'nullable|string',
             'fecha_fin' => 'nullable|date|after_or_equal:' . $project->fecha_inicio,
         ]);
@@ -116,7 +124,7 @@ class ProjectController extends Controller
             'descripcion' => 'nullable|string|max:500',
         ]);
 
-        $fases = ['propuesta', 'analisis', 'diseño', 'desarrollo', 'prueba', 'implantacion'];
+        $fases = ['formulacion', 'ejecucion', 'finalizacion y divulgacion'];
         $faseActualIndex = array_search($project->fase_actual, $fases);
 
         if ($faseActualIndex === false) {

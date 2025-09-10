@@ -17,7 +17,7 @@ return new class extends Migration
         $table->foreignId('director_id')->constrained('users')->cascadeOnDelete();
         $table->string('nombre');
         $table->text('descripcion')->nullable();
-        $table->enum('fase_actual', ['propuesta','analisis','diseño','desarrollo','prueba','implantacion'])->default('propuesta');
+        $table->enum('fase_actual', ['formulacion', 'ejecucion', 'finalizacion y divulgacion'])->default('formulacion');
         $table->date('fecha_inicio')->nullable();
         $table->date('fecha_fin')->nullable();
         $table->timestamps();
