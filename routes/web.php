@@ -58,6 +58,13 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('projects', ProjectController::class);
     Route::post('projects/{project}/advance', [ProjectController::class, 'advance'])->name('projects.advance');
 
+    Route::post('projects/{project}/fases/{fase}/documento', [ProjectController::class, 'storeFaseDocumento'])
+        ->name('projects.fases.documento.store');
+
+    Route::delete('projects/{project}/fases/{fase}/documento', [ProjectController::class, 'destroyFaseDocumento'])
+        ->name('projects.fases.documento.destroy');
+
+
 
     //asociar aprendices con proyectos
     Route::get('/project-integrantes', [ProjectIntegranteController::class, 'index'])
@@ -70,7 +77,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('project_integrantes.store');
 
     Route::delete('/projects/{project}/aprendices/{aprendiz}', [ProjectIntegranteController::class, 'destroy'])
-    ->name('project.aprendices.destroy');
+        ->name('project.aprendices.destroy');
 
 
 
@@ -86,10 +93,9 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('/projects/{project}/fases/{fase}', [ProjectController::class, 'showFase'])
-    ->name('projects.fases.show');
+        ->name('projects.fases.show');
 
     Route::get('/dashboard', [dashboardController::class, 'index'])->name('dashboard');
-
 });
 
 

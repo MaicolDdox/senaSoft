@@ -14,6 +14,7 @@ class ProjectFase extends Model
         'project_id',
         'nombre',
         'descripcion',
+        'documento',
         'fecha_inicio',
         'fecha_fin',
     ];

@@ -167,11 +167,11 @@
                             <thead>
                                 <tr class="border-b border-border">
                                     <th class="text-left py-3 px-4 font-semibold text-foreground">Fase</th>
-                                    <th class="text-left py-3 px-4 font-semibold text-foreground">Descripcion</th>
                                     <th class="text-left py-3 px-4 font-semibold text-foreground">Fecha Inicio</th>
                                     <th class="text-left py-3 px-4 font-semibold text-foreground">Fecha Fin</th>
                                     <th class="text-left py-3 px-4 font-semibold text-foreground">Estado</th>
                                     <th class="text-left py-3 px-4 font-semibold text-foreground">Acciones</th>
+                                    <th class="text-left py-3 px-4 font-semibold text-foreground">Documentos</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-border">
@@ -191,11 +191,6 @@
                                                 <span
                                                     class="font-medium text-foreground">{{ ucfirst($fase->nombre) }}</span>
                                             </div>
-                                        </td>
-                                        <td>
-                                            @if ($fase->descripcion)
-                                                <p class="text-sm text-muted-foreground mt-1">{{ $fase->descripcion }}</p>
-                                            @endif
                                         </td>
                                         <td class="py-4 px-4 text-muted-foreground">
                                             {{ \Carbon\Carbon::parse($fase->fecha_inicio)->format('d/m/Y') }}
@@ -232,6 +227,66 @@
                                                 </a>
                                             </div>
 
+                                        </td>
+                                        {{-- Mejorando el diseño del formulario de subida de documentos --}}
+                                        <td class="py-4 px-4 text-center">
+                                            @if ($fase->documento)
+                                                {{-- Enlace para ver o descargar con diseño SENA mejorado --}}
+                                                <div class="flex items-center justify-center space-x-2">
+                                                    <a href="{{ Storage::url($fase->documento) }}" target="_blank"
+                                                        class="inline-flex items-center space-x-2 px-4 py-2 bg-green-50 hover:bg-green-100 text-green-700 hover:text-green-800 rounded-lg text-sm font-medium transition-all duration-200 border border-green-200 hover:border-green-300">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <!-- Icono: archivo + flecha hacia abajo -->
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M12 11v6m0 0l-3-3m3 3l3-3M6 8V6a2 2 0 012-2h4l4 4v2" />
+                                                        </svg>
+                                                        <span></span>
+                                                    </a>
+
+                                                    {{-- Botón eliminar mejorado --}}
+                                                    <form
+                                                        action="{{ route('projects.fases.documento.destroy', [$project->id, $fase->id]) }}"
+                                                        method="POST" class="inline-block"
+                                                        onsubmit="return confirm('¿Eliminar este documento?')">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                            class="inline-flex items-center space-x-2 px-4 py-2 bg-red-50 hover:bg-red-100 text-red-700 hover:text-red-800 rounded-lg text-sm font-medium transition-all duration-200 border border-red-200 hover:border-red-300">
+                                                            <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                                viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2"
+                                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                            </svg>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            @else
+                                                {{-- Formulario mejorado para subir documento --}}
+                                                <form
+                                                    action="{{ route('projects.fases.documento.store', [$project->id, $fase->id]) }}"
+                                                    method="POST" enctype="multipart/form-data" class="space-y-3">
+                                                    @csrf
+
+                                                    {{-- Componente de carga de archivos mejorado --}}
+                                                    <x-file-upload-inline name="documento" accept=".pdf,.doc,.docx"
+                                                        :required="true" />
+
+                                                    {{-- Botón de subir mejorado --}}
+                                                    <button type="submit"
+                                                        class="inline-flex items-center space-x-2 px-4 py-2 bg-primary hover:bg-primary/90 text-white rounded-lg text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                                        </svg>
+                                                        <span>Subir Documento</span>
+                                                    </button>
+                                                </form>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

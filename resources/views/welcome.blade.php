@@ -22,6 +22,7 @@
 
     <!-- Added Tailwind CSS CDN for immediate styling -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="{{ asset('js/cdn.js') }}"></script>
     <script src="{{ asset('js/welcome.js') }}"></script>
 
     <!-- Added custom CSS for enhanced animations and effects -->

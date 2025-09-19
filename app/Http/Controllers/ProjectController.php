@@ -6,6 +6,9 @@ use App\Models\Project;
 use App\Models\Semillero;
 use App\Models\ProjectFase;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
+
 
 class ProjectController extends Controller
 {
@@ -182,5 +185,61 @@ class ProjectController extends Controller
         }
 
         return view('container.projects.fases.show', compact('project', 'fase'));
+    }
+
+    /**
+     * Subir o reemplazar el documento de una fase
+     */
+    public function storeFaseDocumento(Request $request, Project $project, ProjectFase $fase)
+    {
+        // Verifica que la fase pertenece al proyecto
+        if ($fase->project_id !== $project->id) {
+            abort(404);
+        }
+
+        $request->validate([
+            'documento' => [
+                'required',
+                'file',
+                'mimes:pdf,doc,docx',
+                'max:2048', // 2 MB (ajusta a lo que necesites)
+            ],
+        ]);
+
+        // Si ya hay documento, elimínalo para reemplazar
+        if ($fase->documento && Storage::disk('public')->exists($fase->documento)) {
+            Storage::disk('public')->delete($fase->documento);
+        }
+
+        // Guarda el archivo en storage/app/public/fases
+        $path = $request->file('documento')->store('fases', 'public');
+
+        $fase->update([
+            'documento' => $path,
+        ]);
+
+        return redirect()
+            ->route('projects.show', $project)
+            ->with('success', 'Documento de la fase subido correctamente.');
+    }
+
+    /**
+     * Eliminar el documento de una fase (sin borrar la fase)
+     */
+    public function destroyFaseDocumento(Project $project, ProjectFase $fase)
+    {
+        if ($fase->project_id !== $project->id) {
+            abort(404);
+        }
+
+        if ($fase->documento && Storage::disk('public')->exists($fase->documento)) {
+            Storage::disk('public')->delete($fase->documento);
+        }
+
+        $fase->update(['documento' => null]);
+
+        return redirect()
+            ->route('projects.show', $project)
+            ->with('success', 'Documento de la fase eliminado correctamente.');
     }
 }
