@@ -10,6 +10,7 @@ use App\Http\Controllers\ProjectIntegranteController;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Http\Controllers\dashboardController;
+use App\Http\Controllers\ProjectFileController;
 
 
 Route::get('/', function () {
@@ -63,6 +64,16 @@ Route::middleware(['auth'])->group(function () {
 
     Route::delete('projects/{project}/fases/{fase}/documento', [ProjectController::class, 'destroyFaseDocumento'])
         ->name('projects.fases.documento.destroy');
+
+    Route::prefix('projects/{project}')->group(function () {
+        Route::post('/files', [ProjectFileController::class, 'store'])->name('projects.files.store');
+    });
+
+    Route::get('/files/{file}/download', [ProjectFileController::class, 'download'])
+        ->name('projects.files.download');
+    
+    Route::delete('/files/{file}', [ProjectFileController::class, 'destroy'])
+        ->name('projects.files.destroy');
 
 
 

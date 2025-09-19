@@ -45,6 +45,12 @@ class Project extends Model
             ->withPivot('rol'); // Si quieres acceder al rol del aprendiz en el proyecto
     }
 
+    public function files()
+    {
+        return $this->hasMany(ProjectFile::class);
+    }
+
+
 
     // Un proyecto puede tener eventos
     public function events()
