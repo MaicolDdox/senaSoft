@@ -33,7 +33,7 @@ class SemilleroController extends Controller
         $request->validate([
             'titulo' => 'required|string|max:255|unique:semilleros,titulo',
             'descripcion' => 'nullable|string',
-            'imagen' => 'required|image|mimes:jpg,jpeg,png,svg|max:2048',
+            'imagen' => 'image|mimes:jpg,jpeg,png,svg|max:2048',
         ]);
 
         // Guardar la imagen en storage/app/public/semilleros
@@ -66,7 +66,7 @@ class SemilleroController extends Controller
         $request->validate([
             'titulo' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
-            'imagen' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048',
+            'imagen' => 'image|mimes:jpg,jpeg,png,svg|max:2048',
         ]);
 
         $data = $request->only(['titulo', 'descripcion']);

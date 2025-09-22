@@ -125,7 +125,7 @@
                     {{-- Área de carga mejorada con drag & drop y diseño más grande --}}
                     <div class="relative">
                         <input type="file" id="imagen" name="imagen"
-                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" accept="image/*" required
+                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" accept="image/*" 
                             onchange="handleFileSelect(this)">
 
                         <div id="dropZone"

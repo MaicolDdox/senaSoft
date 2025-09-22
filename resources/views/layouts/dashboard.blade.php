@@ -2,39 +2,12 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dashboard - CEFA | Sistema de Gestión de Semilleros</title>
-    <meta name="description" content="Panel de control del Sistema de Gestión de Semilleros de Investigación - CEFA">
-
-    <link rel="icon" href="/favicon.ico" sizes="any">
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-
-    <!-- Updated fonts to match welcome.blade.php design system -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link
-        href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600|playfair-display:700|source-sans-pro:400,500,600"
-        rel="stylesheet" />
-
-    <!-- Added AOS library for animations -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
-    <!-- apexcharts script para los estilos -->
-    <link rel="stylesheet" href="./assets/vendor/apexcharts/dist/apexcharts.css">
-
-
-
-    <!-- Updated to latest Tailwind CSS CDN with SENA color configuration -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="{{ asset('js/dashboard.js') }}"></script>
-
-    <!-- Added enhanced CSS animations and sidebar effects -->
-    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    @include('partials.head')
 </head>
 
 <body class="bg-muted font-body antialiased">
     <div class="flex h-screen overflow-hidden">
-        <!-- Completely redesigned sidebar with professional SENA styling -->
+
         <aside class="w-72 bg-card shadow-xl border-r border-border flex flex-col">
             <!-- Sidebar Header -->
             <div class="p-6 border-b border-border">
@@ -53,287 +26,28 @@
 
             <!-- Redesigned navigation menu with sections and improved UX -->
             <nav class="flex-1 p-4 overflow-y-auto">
-                <!-- Dashboard Section -->
-                <div class="mb-6">
-                    <h3
-                        class="sidebar-section-title text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-                        Home
-                    </h3>
-                    <ul class="space-y-1">
-                        <li>
-                            <a href="{{ route('dashboard') }}"
-                                class="sidebar-item flex items-center px-4 py-3 text-sm rounded-lg {{ request()->routeIs('dashboard') ? 'active' : 'text-muted-foreground hover:text-foreground' }}">
-                                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M8 5a2 2 0 012-2h2a2 2 0 012 2v6H8V5z" />
-                                </svg>
-                                Dashboard Principal
-                            </a>
-                        </li>
-                    </ul>
-                </div>
 
-                <!-- Semilleros Section -->
-                @if (auth()->user()->can('semilleros.index') || auth()->user()->can('semilleros.create'))
-                    <div class="mb-6">
-                        <h3
-                            class="sidebar-section-title text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-                            Semilleros
-                        </h3>
-                        <ul class="space-y-1">
-                            @can('semilleros.index')
-                                <li>
-                                    <a href="{{ route('semilleros.index') }}"
-                                        class="sidebar-item flex items-center px-4 py-3 text-sm rounded-lg {{ request()->routeIs('semilleros.index') ? 'active' : 'text-muted-foreground hover:text-foreground' }}">
-                                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                                        </svg>
-                                        Ver Semilleros
-                                    </a>
-                                </li>
-                            @endcan
-                            @can('semilleros.create')
-                                <li>
-                                    <a href="{{ route('semilleros.create') }}"
-                                        class="sidebar-item flex items-center px-4 py-3 text-sm rounded-lg {{ request()->routeIs('semilleros.create') ? 'active' : 'text-muted-foreground hover:text-foreground' }}">
-                                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                        </svg>
-                                        Crear Semillero
-                                    </a>
-                                </li>
-                            @endcan
-                        </ul>
-                    </div>
-                @endif
+                @include('menu.home')
 
-                <!-- Directores Section -->
-                @if (auth()->user()->can('directores.index') || auth()->user()->can('directores.create'))
-                    <div class="mb-6">
-                        <h3
-                            class="sidebar-section-title text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-                            Directores
-                        </h3>
-                        <ul class="space-y-1">
-                            @can('directores.index')
-                                <li>
-                                    <a href="{{ route('directores.index') }}"
-                                        class="sidebar-item flex items-center px-4 py-3 text-sm rounded-lg {{ request()->routeIs('directores.index') ? 'active' : 'text-muted-foreground hover:text-foreground' }}">
-                                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        </svg>
-                                        Ver Directores
-                                    </a>
-                                </li>
-                            @endcan
-                            @can('directores.create')
-                                <li>
-                                    <a href="{{ route('directores.create') }}"
-                                        class="sidebar-item flex items-center px-4 py-3 text-sm rounded-lg {{ request()->routeIs('directores.create') ? 'active' : 'text-muted-foreground hover:text-foreground' }}">
-                                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                        </svg>
-                                        Crear Director
-                                    </a>
-                                </li>
-                            @endcan
-                        </ul>
-                    </div>
-                @endif
+                @include('menu.semilleros')
 
-                <!-- Integrantes Section -->
-                @if (auth()->user()->can('integrantes.index') || auth()->user()->can('integrantes.create'))
-                    <div class="mb-6">
-                        <h3
-                            class="sidebar-section-title text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-                            Integrantes
-                        </h3>
-                        <ul class="space-y-1">
-                            @can('integrantes.index')
-                                <li>
-                                    <a href="{{ route('aprendices.index') }}"
-                                        class="sidebar-item flex items-center px-4 py-3 text-sm rounded-lg {{ request()->routeIs('integrantes.index') ? 'active' : 'text-muted-foreground hover:text-foreground' }}">
-                                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                                        </svg>
-                                        Ver Integrantes
-                                    </a>
-                                </li>
-                            @endcan
-                            @can('integrantes.create')
-                                <li>
-                                    <a href="{{ route('aprendices.create') }}"
-                                        class="sidebar-item flex items-center px-4 py-3 text-sm rounded-lg {{ request()->routeIs('integrantes.create') ? 'active' : 'text-muted-foreground hover:text-foreground' }}">
-                                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                        </svg>
-                                        Crear Integrante
-                                    </a>
-                                </li>
-                            @endcan
-                        </ul>
-                    </div>
-                @endif
+                @include('menu.directores')
 
-                <!-- Proyectos Section -->
-                @if (auth()->user()->can('projects.index') || auth()->user()->can('projects.create'))
-                    <div class="mb-6">
-                        <h3
-                            class="sidebar-section-title text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-                            Proyectos
-                        </h3>
-                        <ul class="space-y-1">
-                            @can('projects.index')
-                                <li>
-                                    <a href="{{ route('projects.index') }}"
-                                        class="sidebar-item flex items-center px-4 py-3 text-sm rounded-lg {{ request()->routeIs('projects.index') ? 'active' : 'text-muted-foreground hover:text-foreground' }}">
-                                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M9 13h6m-3-3v6m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                        </svg>
-                                        Ver Proyectos
-                                    </a>
-                                </li>
-                            @endcan
-                            @can('projects.create')
-                                <li>
-                                    <a href="{{ route('projects.create') }}"
-                                        class="sidebar-item flex items-center px-4 py-3 text-sm rounded-lg {{ request()->routeIs('projects.create') ? 'active' : 'text-muted-foreground hover:text-foreground' }}">
-                                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                        </svg>
-                                        Crear Proyecto
-                                    </a>
-                                </li>
-                            @endcan
-                        </ul>
-                    </div>
-                @endif
+                @include('menu.integrantes')
 
-                <!-- Integrantes Section -->
+                @include('menu.proyectos')
 
-                <div class="mb-6">
-                    <h3
-                        class="sidebar-section-title text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-                        Integrantes
-                    </h3>
-                    <ul class="space-y-1">
-                        {{-- Crear asociación de aprendices a proyecto --}}
-                        @can('project_integrantes.create')
-                            <li>
-                                <a href="{{ route('project_integrantes.create') }}"
-                                    class="sidebar-item flex items-center px-4 py-3 text-sm rounded-lg {{ request()->routeIs('project_integrantes.create') ? 'active' : 'text-muted-foreground hover:text-foreground' }}">
-                                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                    </svg>
-                                    Asociar Aprendices
-                                </a>
-                            </li>
-                        @endcan
-                    </ul>
-                    <ul class="space-y-1">
-                        {{-- Crear asociación de aprendices a proyecto --}}
+                @include('menu.event')
 
-                        <li>
-                            <a href="{{ route('project_integrantes.index') }}"
-                                class="sidebar-item flex items-center px-4 py-3 text-sm rounded-lg {{ request()->routeIs('project_integrantes.create') ? 'active' : 'text-muted-foreground hover:text-foreground' }}">
-                                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                </svg>
-                                Lista De asociaciones
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
-
-
-                <!-- Eventos Section -->
-                @if (auth()->user()->can('events.index') || auth()->user()->can('events.create'))
-                    <div class="mb-6">
-                        <h3
-                            class="sidebar-section-title text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-                            Eventos
-                        </h3>
-                        <ul class="space-y-1">
-                            @can('events.index')
-                                <li>
-                                    <a href="{{ route('events.index') }}"
-                                        class="sidebar-item flex items-center px-4 py-3 text-sm rounded-lg {{ request()->routeIs('events.index') ? 'active' : 'text-muted-foreground hover:text-foreground' }}">
-                                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2z" />
-                                        </svg>
-                                        Ver Eventos
-                                    </a>
-                                </li>
-                            @endcan
-                        </ul>
-                    </div>
-                @endif
-
-
-
-                <!-- Enhanced logout section with better styling -->
-                <div class="p-4 border-t border-border">
-                    @auth
-                        <form method="POST" action="{{ route('logout') }}" class="w-full">
-                            @csrf
-                            <button type="submit"
-                                class="w-full flex items-center justify-center px-4 py-3 bg-secondary hover:bg-secondary/80 text-secondary-foreground rounded-lg transition-all duration-200 font-medium group">
-                                <svg class="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform duration-200"
-                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                                </svg>
-                                Cerrar Sesión
-                            </button>
-                        </form>
-                    @endauth
-                </div>
+                @include('partials.logout')
+            </nav>
         </aside>
 
 
         <!-- Enhanced main content area with better header and styling -->
         <main class="flex-1 flex flex-col overflow-hidden">
-            <!-- Top Header -->
-            <header class="bg-card border-b border-border px-6 py-4">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h1 class="text-2xl font-bold text-foreground">Dashboard</h1>
-                        <p class="text-sm text-muted-foreground">Sistema de Gestión de Semilleros de Investigación</p>
-                    </div>
-                    <div class="flex items-center space-x-4">
-                        <div class="text-right">
-                            <p class="text-sm font-medium text-foreground">{{ auth()->user()->name }}</p>
-                            <p class="text-xs text-muted-foreground">
-                                {{ auth()->user()->roles->first()->name ?? 'Sin rol' }}</p>
-                        </div>
-                        <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-            </header>
+
+            @include('partials.header')
 
             <!-- Content Area -->
             <div class="flex-1 p-6 overflow-y-auto bg-muted">
@@ -456,35 +170,11 @@
     </div>
 
     <!-- Simplified JavaScript - removed problematic AOS reinitializations and complex animations, JS DE APEXCHART -->
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<script src="./assets/vendor/lodash/lodash.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="./assets/vendor/lodash/lodash.min.js"></script>
 
-
-    <script>
-        // Initialize AOS only once on page load
-        AOS.init({
-            duration: 400,
-            easing: 'ease-in-out',
-            once: true,
-            offset: 50,
-            disable: 'mobile' // Disable on mobile to prevent performance issues
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const sidebarItems = document.querySelectorAll('.sidebar-item');
-
-            // Simple active state management without animations
-            sidebarItems.forEach(item => {
-                const href = item.getAttribute('href');
-                if (href && window.location.pathname === href) {
-                    item.classList.add('active');
-                }
-            });
-        });
-    </script>
-
-
+    <script src="{{ asset('js/dashboard/aos.js') }}"></script>
 
 
     <script>
