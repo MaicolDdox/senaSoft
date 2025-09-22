@@ -2,95 +2,15 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Updated title and meta for CEFA system -->
-    <title>CEFA</title>
-    <meta name="description"
-        content="Sistema de información para la gestión y seguimiento de grupos de semilleros de investigación del Centro de Formación Agroindustrial CEFA">
-
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link
-        href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600|playfair-display:700|source-sans-pro:400,500,600"
-        rel="stylesheet" />
-
-    <!-- Added AOS (Animate On Scroll) library for smooth animations -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
-    <!-- Added Tailwind CSS CDN for immediate styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="{{ asset('js/cdn.js') }}"></script>
-    <script src="{{ asset('js/welcome.js') }}"></script>
-
-    <!-- Added custom CSS for enhanced animations and effects -->
-    <link rel="stylesheet" href="{{ asset('css/welcome.css') }}">
-
+    
+@include('partials.welcome-head')
 
 </head>
 
 <body class="bg-background text-foreground antialiased min-h-screen font-body">
     <!-- Professional header with SENA branding -->
     <header class="bg-background border-b border-border" data-aos="fade-down" data-aos-duration="800">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex items-center justify-between">
-                <!-- Logo and title -->
-                <div class="flex items-center space-x-4">
-                    <div class="w-12 h-12 bg-primary rounded-lg flex items-center justify-center floating-animation">
-                        <svg class="w-8 h-8 text-primary-foreground" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h1 class="text-xl font-bold text-foreground">CEFA</h1>
-                        <p class="text-sm text-muted-foreground">Centro de Formación Agroindustrial</p>
-                    </div>
-                </div>
-
-                <!-- Navigation -->
-                @if (Route::has('login'))
-                    <nav class="flex items-center space-x-4" data-aos="fade-left" data-aos-duration="800">
-                        @auth
-                            <!-- Mejorado botón dashboard con icono y mejores efectos -->
-                            <a href="{{ url('/dashboard') }}"
-                                class="inline-flex items-center space-x-2 px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 pulse-glow group">
-                                <svg class="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" fill="none"
-                                    stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                                </svg>
-                                <span>Dashboard</span>
-                            </a>
-                        @else
-                            <!-- Mejorado enlace de login con icono y efectos -->
-                            <a href="{{ route('login') }}"
-                                class="inline-flex items-center space-x-2 px-5 py-2.5 text-foreground hover:text-primary transition-all duration-300 font-medium rounded-lg hover:bg-primary/5 group">
-                                <svg class="w-5 h-5 group-hover:scale-110 transition-transform duration-300" fill="none"
-                                    stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-                                </svg>
-                                <span>Iniciar Sesión</span>
-                            </a>
-                            @if (Route::has('register'))
-                                <!-- Mejorado enlace de registro con icono y efectos modernos -->
-                                <a href="{{ route('register') }}"
-                                    class="inline-flex items-center space-x-2 px-6 py-2.5 border-2 border-primary/20 text-primary font-semibold rounded-lg hover:border-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 transform hover:scale-105 shadow-sm hover:shadow-lg group">
-                                    <svg class="w-5 h-5 group-hover:rotate-12 transition-transform duration-300"
-                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-                                    </svg>
-                                    <span>Registrarse</span>
-                                </a>
-                            @endif
-                        @endauth
-                    </nav>
-                @endif
-            </div>
-        </div>
+        @include('components.layouts.app.header')
     </header>
 
     <!-- Hero section for research management system -->
@@ -268,147 +188,12 @@
 
     <!-- Professional footer with institutional information -->
     <footer class="bg-secondary text-secondary-foreground py-12" data-aos="fade-up" data-aos-duration="800">
-        <div class="container mx-auto px-6">
-            <div class="grid md:grid-cols-3 gap-8">
-                <div>
-                    <div class="flex items-center space-x-3 mb-4">
-                        <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-primary-foreground" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="font-bold">CEFA</h3>
-                            <p class="text-sm opacity-80">Centro de Formación Agroindustrial</p>
-                        </div>
-                    </div>
-                    <p class="text-sm opacity-80 leading-relaxed">
-                        Sistema de información especializado en la gestión y seguimiento de grupos de semilleros de
-                        investigación.
-                    </p>
-                </div>
-
-                <div>
-                    <h4 class="font-semibold mb-4">Enlaces Útiles</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#"
-                                class="opacity-80 hover:opacity-100 transition-opacity">Documentación</a></li>
-                        <li><a href="#" class="opacity-80 hover:opacity-100 transition-opacity">Soporte
-                                Técnico</a></li>
-                        <li><a href="#" class="opacity-80 hover:opacity-100 transition-opacity">Términos de
-                                Uso</a></li>
-                        <li><a href="#" class="opacity-80 hover:opacity-100 transition-opacity">Política de
-                                Privacidad</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="font-semibold mb-4">Contacto</h4>
-                    <div class="space-y-2 text-sm opacity-80">
-                        <p>Centro de Formación Agroindustrial</p>
-                        <p>Email: info@cefa.edu.co</p>
-                        <p>Teléfono: +57 (1) 234-5678</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="border-t border-secondary-foreground/20 mt-8 pt-8 text-center">
-                <p class="text-sm opacity-80">
-                    © {{ date('Y') }} Centro de Formación Agroindustrial CEFA. Todos los derechos reservados.
-                </p>
-            </div>
-        </div>
+        @include('components.layouts.app.footer')
     </footer>
 
     <!-- Added AOS JavaScript library and custom animations initialization -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        // Initialize AOS (Animate On Scroll)
-        AOS.init({
-            duration: 800,
-            easing: 'ease-in-out',
-            once: true,
-            offset: 100
-        });
-
-        // Custom JavaScript animations and interactions
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-                });
-            });
-
-            // Add interactive hover effects to cards
-            const cards = document.querySelectorAll('.card-hover-effect');
-            cards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-8px) scale(1.02)';
-                    this.style.boxShadow = '0 20px 40px rgba(0, 166, 93, 0.15)';
-                });
-
-                card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0) scale(1)';
-                    this.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
-                });
-            });
-
-            // Add parallax effect to hero section
-            window.addEventListener('scroll', function() {
-                const scrolled = window.pageYOffset;
-                const parallax = document.querySelector('.bg-gradient-to-br');
-                if (parallax) {
-                    const speed = scrolled * 0.5;
-                    parallax.style.transform = `translateY(${speed}px)`;
-                }
-            });
-
-            // Add typing effect to main title (optional enhancement)
-            const title = document.querySelector('h1 span.gradient-text');
-            if (title) {
-                const text = title.textContent;
-                title.textContent = '';
-                title.classList.add('typewriter');
-
-                let i = 0;
-                const typeWriter = () => {
-                    if (i < text.length) {
-                        title.textContent += text.charAt(i);
-                        i++;
-                        setTimeout(typeWriter, 100);
-                    } else {
-                        title.classList.remove('typewriter');
-                    }
-                };
-
-                setTimeout(typeWriter, 1500);
-            }
-
-            // Add counter animation for statistics (if needed in future)
-            function animateCounter(element, target, duration = 2000) {
-                let start = 0;
-                const increment = target / (duration / 16);
-
-                const timer = setInterval(() => {
-                    start += increment;
-                    element.textContent = Math.floor(start);
-
-                    if (start >= target) {
-                        element.textContent = target;
-                        clearInterval(timer);
-                    }
-                }, 16);
-            }
-        });
-    </script>
+    <script src="{{ asset('js/welcome/aos.js') }}"></script>
 </body>
 
 </html>

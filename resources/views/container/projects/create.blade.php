@@ -201,7 +201,7 @@
             // Select para proyectos (solo uno)
             new TomSelect("#project_id", {
                 create: false,
-                searchField: ["text"], // 🔑 filtra en tiempo real mientras escribes
+                searchField: ["text"], 
                 persist: false,
                 maxItems: 1,
                 sortField: {
@@ -223,7 +223,7 @@
             new TomSelect("#integrantes", {
                 plugins: ["remove_button"],
                 create: false,
-                searchField: ["text"], // 🔑 activa el filtro al escribir
+                searchField: ["text"], 
                 persist: false,
                 maxItems: null, // permite varios
                 sortField: {
