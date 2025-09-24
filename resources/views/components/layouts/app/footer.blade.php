@@ -2,19 +2,17 @@
     <div class="grid md:grid-cols-3 gap-8">
         <div>
             <div class="flex items-center space-x-3 mb-4">
-                <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                    <svg class="w-6 h-6 text-primary-foreground" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                    </svg>
+                <div class="w-10 h-10 rounded-lg flex items-center justify-center">
+                    <img src="{{ asset('img/logoTipo.png') }}" alt="Logotipo" class="w-full h-full object-contain">
                 </div>
                 <div>
-                    <h3 class="font-bold">CEFA</h3>
+                    <h3 class="font-bold">SIA</h3>
                     <p class="text-sm opacity-80">Centro de Formación Agroindustrial</p>
                 </div>
             </div>
             <p class="text-sm opacity-80 leading-relaxed">
                 Sistema de información especializado en la gestión y seguimiento de grupos de semilleros de
-                investigación.
+                investigación la Angosutra.
             </p>
         </div>
 

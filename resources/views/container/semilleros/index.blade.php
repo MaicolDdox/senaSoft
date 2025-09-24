@@ -7,7 +7,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h1 class="text-3xl font-bold text-foreground mb-2">Gestión de Semilleros</h1>
-                    <p class="text-muted-foreground">Administra los grupos de semilleros de investigación del CEFA</p>
+                    <p class="text-muted-foreground">Administra los grupos de semilleros de investigación del SIA</p>
                 </div>
                 <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
                     <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">

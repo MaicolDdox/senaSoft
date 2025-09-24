@@ -2,13 +2,15 @@
     <div class="flex items-center justify-between">
         <!-- Logo and title -->
         <div class="flex items-center space-x-4">
-            <div class="w-12 h-12 bg-primary rounded-lg flex items-center justify-center floating-animation">
-                <svg class="w-8 h-8 text-primary-foreground" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                </svg>
-            </div>
+            <div class="w-12 h-12 rounded-lg flex items-center justify-center floating-animation">
+             <img 
+                src="{{ asset('img/logoTipo.png') }}" 
+                alt="Logotipo" 
+                class="w-full h-full object-contain"
+                >
+        </div>
             <div>
-                <h1 class="text-xl font-bold text-foreground">CEFA</h1>
+                <h1 class="text-xl font-bold text-foreground">SIA</h1>
                 <p class="text-sm text-muted-foreground">Centro de Formación Agroindustrial</p>
             </div>
         </div>

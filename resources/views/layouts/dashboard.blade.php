@@ -12,14 +12,12 @@
             <!-- Sidebar Header -->
             <div class="p-6 border-b border-border">
                 <div class="flex items-center space-x-4 mb-6">
-                    <div class="w-12 h-12 sidebar-logo rounded-xl flex items-center justify-center shadow-lg">
-                        <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                        </svg>
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg">
+                        <img src="{{ asset('img/logoTipo.png') }}" alt="Logotipo" class="w-full h-full object-contain">
                     </div>
                     <div>
-                        <h1 class="text-xl font-bold text-foreground">CEFA</h1>
-                        <p class="text-sm text-muted-foreground">Sistema de Gestión</p>
+                        <h1 class="text-xl font-bold text-foreground">SIA</h1>
+                        <p class="text-sm text-muted-foreground">Semilleros de Investigacion</p>
                     </div>
                 </div>
             </div>
@@ -130,9 +128,8 @@
                         <!-- Welcome Section -->
                         <div class="bg-card rounded-lg p-8 shadow-sm border border-border">
                             <div class="text-center">
-                                <h2 class="text-3xl font-bold text-foreground mb-4">Bienvenido al Sistema CEFA</h2>
-                                <p class="text-lg text-muted-foreground mb-6">Sistema de Gestión y Seguimiento de
-                                    Grupos de Semilleros de Investigación</p>
+                                <h2 class="text-3xl font-bold text-foreground mb-4">Bienvenido al Sistema SIA</h2>
+                                <p class="text-lg text-muted-foreground mb-6">Sistema de Semilleros de Investigacion la Angostura</p>
                                 <div class="flex justify-center space-x-4">
                                     <div class="grid grid-cols-2 gap-6">
 

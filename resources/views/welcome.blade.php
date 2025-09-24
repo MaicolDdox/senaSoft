@@ -2,8 +2,8 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    
-@include('partials.welcome-head')
+
+    @include('partials.welcome-head')
 
 </head>
 
@@ -21,8 +21,8 @@
                 <div class="max-w-4xl mx-auto text-center">
                     <h1 class="text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight" data-aos="fade-up"
                         data-aos-duration="1000">
-                        Sistema de Gestión de
-                        <span class="gradient-text">Semilleros de Investigación</span>
+                        Sistema de Semilleros de
+                        <span class="gradient-text">Investigacion la Angostura</span>
                     </h1>
                     <p class="text-xl text-muted-foreground mb-8 leading-relaxed max-w-3xl mx-auto" data-aos="fade-up"
                         data-aos-delay="200" data-aos-duration="1000">
@@ -80,8 +80,7 @@
                         data-aos="fade-up" data-aos-delay="200" data-aos-duration="800">
                         <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6 floating-animation"
                             style="animation-delay: 1s;">
-                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
+                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                             </svg>
@@ -98,8 +97,7 @@
                         data-aos="fade-up" data-aos-delay="300" data-aos-duration="800">
                         <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6 floating-animation"
                             style="animation-delay: 2s;">
-                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
+                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                             </svg>
@@ -116,8 +114,7 @@
                         data-aos="fade-up" data-aos-delay="400" data-aos-duration="800">
                         <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6 floating-animation"
                             style="animation-delay: 3s;">
-                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
+                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M8 7V3l8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
@@ -169,6 +166,10 @@
         <!-- CTA section for getting started -->
         <section class="py-20 bg-muted">
             <div class="container mx-auto px-6 text-center" data-aos="fade-up" data-aos-duration="1000">
+                <!-- Logo -->
+                <img src="{{ asset('img/logoTipo.png') }}" alt="Logotipo"
+                    class="mx-auto mb-6 w-32 h-32 object-contain">
+
                 <h2 class="text-3xl font-bold text-foreground mb-4">
                     Impulsa la Investigación en tu Centro
                 </h2>
@@ -183,6 +184,7 @@
                     </a>
                 @endguest
             </div>
+
         </section>
     </main>
 

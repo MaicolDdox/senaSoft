@@ -8,7 +8,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h1 class="text-3xl font-bold text-foreground mb-2">Gestión de Proyectos</h1>
-                    <p class="text-muted-foreground">Administra y da seguimiento a los proyectos de investigación del CEFA
+                    <p class="text-muted-foreground">Administra y da seguimiento a los proyectos de investigación del SIA
                     </p>
                 </div>
                 <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">

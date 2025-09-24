@@ -2,8 +2,8 @@
 <header class="bg-card border-b border-border px-6 py-4">
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-2xl font-bold text-foreground">CEFA</h1>
-            <p class="text-sm text-muted-foreground">Sistema de Gestión de Semilleros de Investigación</p>
+            <h1 class="text-2xl font-bold text-foreground">SIA</h1>
+            <p class="text-sm text-muted-foreground">Sistema de Gestión de Semilleros de Investigación la Angostura</p>
         </div>
         <div class="flex items-center space-x-4">
             <div class="text-right">

@@ -1,11 +1,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- Updated title and meta for CEFA system -->
-<title>CEFA</title>
+<!-- Updated title and meta for SIA system -->
+<title>SIA</title>
 <meta name="description"
-    content="Sistema de información para la gestión y seguimiento de grupos de semilleros de investigación del Centro de Formación Agroindustrial CEFA">
+    content="Sistema de información para la gestión y seguimiento de grupos de semilleros de investigación del Centro de Formación Agroindustrial ">
 
+<!-- ICONO DEL SENA -->
+    <link rel="icon" href="{{ asset('img/logoTipo.png') }}" type="image/x-icon">
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.bunny.net">
