@@ -7,11 +7,11 @@ use Illuminate\Http\Request;
 
 class AprendizController extends Controller
 {
-    public function index(\Illuminate\Http\Request $request)
+    public function index(Request $request)
     {
         $q = trim($request->input('q', ''));
 
-        $aprendices = User::role('aprendiz_asociado')
+        $aprendices = User::role('aprendiz_integrado')
             ->when($q, function ($query) use ($q) {
                 $query->where('name', 'like', "%{$q}%")
                     ->orWhere('email', 'like', "%{$q}%");

@@ -47,7 +47,7 @@ class ProjectController extends Controller
 
     public function create()
     {
-        $semilleros = \App\Models\Semillero::all();
+        $semilleros = Semillero::all();
         return view('container.projects.create', compact('semilleros'));
     }
 

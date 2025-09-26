@@ -16,48 +16,44 @@ class RoleSeeder extends Seeder
         // -------------------------
         // Creación de Roles
         // -------------------------
-        $rolDirectora = Role::create(['name' => 'directora_semilleros']);
-        $rolDirectorGrupo = Role::create(['name' => 'director_grupo']);
-        $rolAprendiz = Role::create(['name' => 'aprendiz_asociado']);
+        $superAdmin = Role::create(['name' => 'super_admin']);
+        $directorSemilleros = Role::create(['name' => 'director_semilleros']);
+        $liderSemilleros = Role::create(['name' => 'lider_semilleros']);
+        $instructorIntegrado = Role::create(['name' => 'instructor_integrado']);
+        $aprendizIntegrado = Role::create(['name' => 'aprendiz_integrado']);
 
         // -------------------------
-        // Permisos para semilleros (solo Directora CRUD)
+        // Creación de Permirsos
         // -------------------------
+
+        // Permisos para semilleros 
         Permission::create(['name' => 'semilleros.index']);
         Permission::create(['name' => 'semilleros.create']);
         Permission::create(['name' => 'semilleros.edit']);
         Permission::create(['name' => 'semilleros.delete']);
 
-        // -------------------------
-        // Permisos para directores (solo Directora CRUD)
-        // -------------------------
+        // Permisos para directores 
         Permission::create(['name' => 'directores.index']);
         Permission::create(['name' => 'directores.create']);
         Permission::create(['name' => 'directores.edit']);
         Permission::create(['name' => 'directores.delete']);
         Permission::create(['name' => 'directores.history']); // historial de asignaciones
 
-        // -------------------------
-        // Permisos para integrantes (manejo en semilleros)
-        // -------------------------
+        // Permisos para integrantes 
         Permission::create(['name' => 'integrantes.index']);
         Permission::create(['name' => 'integrantes.create']);
         Permission::create(['name' => 'integrantes.edit']);
         Permission::create(['name' => 'integrantes.delete']);
         Permission::create(['name' => 'integrantes.history']);
 
-        // -------------------------
         // Permisos para integrantes en proyectos
-        // -------------------------
         Permission::create(['name' => 'project_integrantes.index']);
         Permission::create(['name' => 'project_integrantes.create']);
         Permission::create(['name' => 'project_integrantes.edit']);
         Permission::create(['name' => 'project_integrantes.delete']);
         Permission::create(['name' => 'project_integrantes.history']);
 
-        // -------------------------
         // Permisos para projects
-        // -------------------------
         Permission::create(['name' => 'projects.index']);
         Permission::create(['name' => 'projects.create']);
         Permission::create(['name' => 'projects.edit']);
@@ -65,20 +61,20 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'projects.advance']);
         Permission::create(['name' => 'projects.report']);
 
-        // -------------------------
+        
         // Permisos para events (calendario)
-        // -------------------------
         Permission::create(['name' => 'events.index']);
-        Permission::create(['name' => 'events.create']);
-        Permission::create(['name' => 'events.edit']);
-        Permission::create(['name' => 'events.delete']);
+
 
         // -------------------------
         // Asignar permisos a roles
         // -------------------------
 
-        // Directora de semilleros
-        $rolDirectora->givePermissionTo([
+        //Super administrador
+        $superAdmin->givePermissionTo(Permission::all());
+
+        // Director de semilleros
+        $directorSemilleros->givePermissionTo([
             'semilleros.index',
             'semilleros.create',
             'semilleros.edit',
@@ -96,7 +92,7 @@ class RoleSeeder extends Seeder
         ]);
 
         // Director de grupo
-        $rolDirectorGrupo->givePermissionTo([
+        $liderSemilleros->givePermissionTo([
             'semilleros.index', // Solo ve su grupo
             'integrantes.index',
             'integrantes.create',
@@ -117,8 +113,16 @@ class RoleSeeder extends Seeder
             'events.index',
         ]);
 
-        // Aprendiz asociado
-        $rolAprendiz->givePermissionTo([
+        //instructor integrado
+        $instructorIntegrado->givePermissionTo([
+            'semilleros.index',
+            'project_integrantes.index',
+            'projects.index',
+            'events.index',
+        ]);
+
+        // Aprendiz integrado
+        $aprendizIntegrado->givePermissionTo([
             'semilleros.index',
             'project_integrantes.index',
             'projects.index',

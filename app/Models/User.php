@@ -11,7 +11,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, HasRoles, Notifiable;
 
     protected $fillable = [
         'name',
@@ -37,7 +37,7 @@ class User extends Authenticatable
         return Str::of($this->name)
             ->explode(' ')
             ->take(2)
-            ->map(fn($word) => Str::substr($word, 0, 1))
+            ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
 
@@ -51,5 +51,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Project::class, 'project_user')
             ->withPivot('is_director', 'joined_at', 'left_at');
+    }
+
+    public function dataUser()
+    {
+        return $this->hasOne(DataUser::class);
     }
 }

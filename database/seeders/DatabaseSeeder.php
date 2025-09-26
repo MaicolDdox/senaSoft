@@ -16,21 +16,30 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeeder::class);
         // User::factory(10)->create();
 
-        // Crear usuario Directora de semilleros
-        $rolDirectora = User::factory()->create([
-            'name' => 'Yuli',
-            'email' => 'directora@gmail.com',
+        //creamos un rol super admin
+        $superAdmin = User::factory()->create([
+            'name' => 'Administrador',
+            'email' => 'administrador@gmail.com',
             'password' => bcrypt('admin12345678'), 
         ]);
-        $rolDirectora->assignRole('directora_semilleros');
+        $superAdmin->assignRole('super_admin');
 
-        // Crear usuario Director de projecto
-        $rolDirectorGrupo = User::factory()->create([
-            'name' => 'Ruben',
-            'email' => 'director_grupo@gmail.com',
+
+        // Crear usuario Director de semilleros
+        $directorSemilleros = User::factory()->create([
+            'name' => 'Yuli',
+            'email' => 'directora@gmail.com',
             'password' => bcrypt('director12345678'), 
         ]);
-        $rolDirectorGrupo->assignRole('director_grupo');
+        $directorSemilleros->assignRole('director_semilleros');
+
+        // Crear usuario Lider de semilleros
+        $liderSemilleros = User::factory()->create([
+            'name' => 'Ruben',
+            'email' => 'lider@gmail.com',
+            'password' => bcrypt('lider12345678'), 
+        ]);
+        $liderSemilleros->assignRole('lider_semilleros');
 
     }
 }

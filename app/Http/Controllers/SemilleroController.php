@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class SemilleroController extends Controller
 {
-    public function index(\Illuminate\Http\Request $request)
+    public function index(Request $request)
     {
         $q = trim($request->input('q', ''));
 

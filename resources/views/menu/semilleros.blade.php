@@ -17,6 +17,13 @@
                     </a>
                 </li>
             @endcan
+
+            <!--
+            =============================================================
+            MENU PARA PODER AGREGAR UNA SECCION PARA CREAR LOS SEMILLEROS
+            DESCOMENTAR PARA PODER ACTIVARLO
+            =============================================================
+            
             @can('semilleros.create')
                 <li>
                     <a href="{{ route('semilleros.create') }}"
@@ -29,6 +36,7 @@
                     </a>
                 </li>
             @endcan
+            -->
         </ul>
     </div>
 @endif

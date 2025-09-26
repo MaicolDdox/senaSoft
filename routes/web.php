@@ -11,6 +11,7 @@ use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\ProjectFileController;
+use App\Http\Controllers\DataUserController;
 
 
 Route::get('/', function () {
@@ -102,9 +103,14 @@ Route::middleware(['auth'])->group(function () {
     // -------------------------
     Route::resource('directores', DirectorController::class);
 
-
     Route::get('/projects/{project}/fases/{fase}', [ProjectController::class, 'showFase'])
         ->name('projects.fases.show');
+
+    //Rutas de account
+    Route::get('/perfil/datos', [DataUserController::class, 'edit'])->name('data_users.edit');
+    Route::post('/perfil/datos', [DataUserController::class, 'storeOrUpdate'])->name('data_users.store');
+
+    
 
     Route::get('/dashboard', [dashboardController::class, 'index'])->name('dashboard');
 });

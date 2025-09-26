@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\Hash;
 
 class DirectorController extends Controller
 {
@@ -11,7 +13,7 @@ class DirectorController extends Controller
     {
         $q = trim($request->input('q', ''));
 
-        $directores = User::role('director_grupo')
+        $liderSemilleros = User::role('lider_semilleros')
             ->when($q, function ($query) use ($q) {
                 $query->where('name', 'like', "%{$q}%")
                     ->orWhere('email', 'like', "%{$q}%");
@@ -20,10 +22,8 @@ class DirectorController extends Controller
             ->paginate(10)
             ->appends(['q' => $q]);
 
-        return view('container.director.index', compact('directores', 'q'));
+        return view('container.director.index', compact('liderSemilleros', 'q'));
     }
-
-
 
     public function create()
     {
@@ -56,12 +56,23 @@ class DirectorController extends Controller
 
     public function update(Request $request, User $directore)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $directore->id,
+            'email' => 'required|email|unique:users,email,'.$directore->id,
+            'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $directore->update($request->only('name', 'email'));
+        $data = [
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+        ];
+
+        // Si enviaron password, la encriptamos y la añadimos
+        if (! empty($validated['password'])) {
+            $data['password'] = Hash::make($validated['password']);
+        }
+
+         $directore->update($data);
 
         return redirect()->route('directores.index')->with('success', 'Director actualizado correctamente.');
     }
@@ -69,6 +80,7 @@ class DirectorController extends Controller
     public function destroy(User $directore)
     {
         $directore->delete();
+
         return redirect()->route('directores.index')->with('success', 'Director eliminado correctamente.');
     }
 }
