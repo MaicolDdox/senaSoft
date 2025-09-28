@@ -53,7 +53,7 @@
                         </div>
                     </div>
                     @can('directores.create')
-                        <a href="{{ route('directores.create') }}"
+                        <a href="{{ route('container.director.create') }}"
                             class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2 shadow-sm hover:shadow-md">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -98,7 +98,7 @@
                                         </div>
                                         <div>
                                             <p class="text-sm font-medium text-foreground">{{ $director->name }}</p>
-                                            <p class="text-xs text-muted-foreground">Director</p>
+                                            <p class="text-xs text-muted-foreground">Lider de semilleros</p>
                                         </div>
                                     </div>
                                 </td>

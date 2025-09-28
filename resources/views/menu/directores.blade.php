@@ -1,11 +1,11 @@
 <!-- Directores Section -->
-@if (auth()->user()->can('directores.index') || auth()->user()->can('directores.create'))
+
     <div class="mb-6">
+        @can('directores.index')
         <h3 class="sidebar-section-title text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
             Lider de semilleros
         </h3>
         <ul class="space-y-1">
-            @can('directores.index')
                 <li>
                     <a href="{{ route('directores.index') }}"
                         class="sidebar-item flex items-center px-4 py-3 text-sm rounded-lg {{ request()->routeIs('directores.index') ? 'active' : 'text-muted-foreground hover:text-foreground' }}">
@@ -38,4 +38,4 @@
         </ul>
     -->
     </div>
-@endif
+

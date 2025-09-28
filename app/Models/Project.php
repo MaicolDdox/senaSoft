@@ -51,7 +51,6 @@ class Project extends Model
     }
 
 
-
     // Un proyecto puede tener eventos
     public function events()
     {

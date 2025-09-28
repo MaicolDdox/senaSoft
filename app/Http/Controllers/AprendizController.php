@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\Hash;
+
 
 class AprendizController extends Controller
 {
@@ -22,8 +25,6 @@ class AprendizController extends Controller
 
         return view('container.integrantes.index', compact('aprendices', 'q'));
     }
-
-
 
     public function create()
     {
@@ -44,7 +45,7 @@ class AprendizController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
-        $user->assignRole('aprendiz_asociado');
+        $user->assignRole('aprendiz_integrado');
 
         return redirect()->route('aprendices.index')->with('success', 'Aprendiz creado correctamente.');
     }
@@ -52,6 +53,7 @@ class AprendizController extends Controller
     public function edit($id)
     {
         $aprendiz = User::findOrFail($id);
+
         return view('container.integrantes.edit', compact('aprendiz'));
     }
 
@@ -59,12 +61,23 @@ class AprendizController extends Controller
     {
         $aprendiz = User::findOrFail($id);
 
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $aprendiz->id,
+            'email' => 'required|email|unique:users,email,'.$aprendiz->id,
+            'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $aprendiz->update($request->only('name', 'email'));
+        $data = [
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+        ];
+
+        // Si enviaron password, la encriptamos y la añadimos
+        if (! empty($validated['password'])) {
+            $data['password'] = Hash::make($validated['password']);
+        }
+
+        $aprendiz->update($data);
 
         return redirect()->route('aprendices.index')->with('success', 'Aprendiz actualizado correctamente.');
     }
@@ -73,6 +86,7 @@ class AprendizController extends Controller
     {
         $aprendiz = User::findOrFail($id);
         $aprendiz->delete();
+
         return redirect()->route('aprendices.index')->with('success', 'Aprendiz eliminado correctamente.');
     }
 }

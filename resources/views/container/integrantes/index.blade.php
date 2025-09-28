@@ -5,8 +5,8 @@
         <div class="mb-8">
             <div class="flex items-center justify-between">
                 <div>
-                    <h1 class="text-3xl font-bold text-foreground mb-2">Lista de Aprendices</h1>
-                    <p class="text-muted-foreground">Gestiona y administra los aprendices registrados en el sistema CEFA</p>
+                    <h1 class="text-3xl font-bold text-foreground mb-2">Lista de Integrante</h1>
+                    <p class="text-muted-foreground">Gestiona y administra los Integrante registrados en el sistema CEFA</p>
                 </div>
                 <div class="flex items-center space-x-4">
                     <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
@@ -16,13 +16,13 @@
                         </svg>
                     </div>
                     @can('integrantes.create')
-                        <a href="{{ route('aprendices.create') }}"
+                        <a href="{{ route('container.director.create') }}"
                             class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2 shadow-sm hover:shadow-md">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                             </svg>
-                            <span>Nuevo Aprendiz</span>
+                            <span>Nuevo Integrante</span>
                         </a>
                     @endcan
                 </div>
@@ -49,13 +49,13 @@
             <div class="px-6 py-4 border-b border-border bg-muted/30">
                 <div class="flex items-center justify-between">
                     <div>
-                        <h3 class="text-lg font-semibold text-foreground">Aprendices Registrados</h3>
+                        <h3 class="text-lg font-semibold text-foreground">Integrante Registrados</h3>
 
                         {{-- Buscador --}}
                         <form id="searchForm" action="{{ route('aprendices.index') }}" method="GET">
                             <div class="relative">
                                 <input type="text" name="q" id="search" value="{{ request('q') }}"
-                                    placeholder="Buscar aprendiz..."
+                                    placeholder="Buscar Integrante..."
                                     class="pl-10 pr-4 py-2 rounded-lg border border-border bg-background text-sm focus:ring-2 focus:ring-primary focus:outline-none w-64">
                                 <svg class="w-4 h-4 absolute left-3 top-2.5 text-muted-foreground" fill="none"
                                     stroke="currentColor" viewBox="0 0 24 24">
@@ -65,14 +65,14 @@
                             </div>
                         </form>
 
-                        <p class="text-sm text-muted-foreground">{{ $aprendices->total() }} aprendices en total</p>
+                        <p class="text-sm text-muted-foreground">{{ $aprendices->total() }} Integrante en total</p>
                     </div>
                     <div class="flex items-center space-x-2 text-sm text-muted-foreground">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                         </svg>
-                        <span>Gestión de Aprendices</span>
+                        <span>Gestión de Integrante</span>
                     </div>
                 </div>
             </div>
@@ -82,7 +82,7 @@
                     <thead class="bg-muted/50 border-b border-border">
                         <tr>
                             <th class="px-6 py-4 text-left text-sm font-medium text-muted-foreground">#</th>
-                            <th class="px-6 py-4 text-left text-sm font-medium text-muted-foreground">Aprendiz</th>
+                            <th class="px-6 py-4 text-left text-sm font-medium text-muted-foreground">Integrante</th>
                             <th class="px-6 py-4 text-left text-sm font-medium text-muted-foreground">Correo Electrónico
                             </th>
                             @can('integrantes.create')
@@ -91,7 +91,7 @@
                         </tr>
                     </thead>
 
-                    {{-- **CAMBIO: agregué el id="aprendicesTable" para que el JS lo encuentre y reemplace su contenido** --}}
+                    {{-- **CAMBIO: agregué el id="IntegranteTable" para que el JS lo encuentre y reemplace su contenido** --}}
                     <tbody id="aprendicesTable" class="divide-y divide-border">
                         @forelse ($aprendices as $index => $aprendiz)
                             <tr class="hover:bg-muted/30 transition-colors duration-150">
@@ -108,7 +108,7 @@
                                         </div>
                                         <div>
                                             <p class="text-sm font-medium text-foreground">{{ $aprendiz->name }}</p>
-                                            <p class="text-xs text-muted-foreground">Aprendiz CEFA</p>
+                                            <p class="text-xs text-muted-foreground">Integrante CEFA</p>
                                         </div>
                                     </div>
                                 </td>
@@ -127,7 +127,7 @@
                                             </a>
                                             <form action="{{ route('aprendices.destroy', $aprendiz->id) }}" method="POST"
                                                 class="inline"
-                                                onsubmit="return confirm('¿Seguro que deseas eliminar este aprendiz?');">
+                                                onsubmit="return confirm('¿Seguro que deseas eliminar este Integrante?');">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit"
@@ -149,17 +149,21 @@
                                 <td colspan="4" class="px-6 py-12 text-center">
                                     <div class="flex flex-col items-center space-y-4">
                                         <div class="w-16 h-16 bg-muted rounded-full flex items-center justify-center">
-                                            <!-- icon -->
+                                            <svg class="w-8 h-8 group-hover:rotate-12 transition-transform duration-300"
+                                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                                            </svg>
                                         </div>
                                         <div class="text-center">
-                                            <h3 class="text-lg font-medium text-foreground mb-1">No hay aprendices
+                                            <h3 class="text-lg font-medium text-foreground mb-1">No hay Integrante
                                                 registrados</h3>
                                             <p class="text-sm text-muted-foreground mb-4">Comienza registrando el primer
-                                                aprendiz en el sistema</p>
+                                                Integrante en el sistema</p>
                                             @can('integrantes.create')
-                                                <a href="{{ route('aprendices.create') }}"
+                                                <a href="{{ route('container.director.create') }}"
                                                     class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 inline-flex items-center space-x-2">
-                                                    <span>Registrar Primer Aprendiz</span>
+                                                    <span>Registrar Primer Integrante</span>
                                                 </a>
                                             @endcan
                                         </div>
@@ -181,8 +185,8 @@
                         d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <div>
-                    <h4 class="font-medium text-blue-800 mb-1">Gestión de Aprendices</h4>
-                    <p class="text-sm text-blue-700">Los aprendices pueden acceder al sistema con sus credenciales para
+                    <h4 class="font-medium text-blue-800 mb-1">Gestión de Integrante</h4>
+                    <p class="text-sm text-blue-700">Los Integrante pueden acceder al sistema con sus credenciales para
                         participar en grupos de semilleros de investigación y gestionar sus proyectos académicos.</p>
                 </div>
             </div>

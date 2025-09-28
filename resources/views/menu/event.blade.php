@@ -1,5 +1,5 @@
 <!-- Eventos Section -->
-@if (auth()->user()->can('events.index') || auth()->user()->can('events.create'))
+
     <div class="mb-6">
         <h3 class="sidebar-section-title text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
             Eventos
@@ -19,4 +19,4 @@
             @endcan
         </ul>
     </div>
-@endif
+

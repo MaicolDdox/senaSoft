@@ -1,18 +1,18 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AprendizController;
+use App\Http\Controllers\dashboardController;
+use App\Http\Controllers\DataUserController;
+use App\Http\Controllers\DirectorController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\SemilleroController;
-use App\Http\Controllers\AprendizController;
-use App\Http\Controllers\DirectorController;
+use App\Http\Controllers\ProjectFileController;
 use App\Http\Controllers\ProjectIntegranteController;
+use App\Http\Controllers\SemilleroController;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
-use App\Http\Controllers\dashboardController;
-use App\Http\Controllers\ProjectFileController;
-use App\Http\Controllers\DataUserController;
-
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserRoleController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -35,10 +35,7 @@ Route::middleware(['auth'])->group(function () {
     // -------------------------
     Route::resource('semilleros', SemilleroController::class);
 
-
-
-
-    /// -------------------------
+    // / -------------------------
     // Rutas de Fases de Proyecto
     // -------------------------
     Route::prefix('projects/{project}/fases')->group(function () {
@@ -72,13 +69,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/files/{file}/download', [ProjectFileController::class, 'download'])
         ->name('projects.files.download');
-    
+
     Route::delete('/files/{file}', [ProjectFileController::class, 'destroy'])
         ->name('projects.files.destroy');
 
-
-
-    //asociar aprendices con proyectos
+    // asociar aprendices con proyectos
     Route::get('/project-integrantes', [ProjectIntegranteController::class, 'index'])
         ->name('project_integrantes.index');
 
@@ -90,8 +85,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::delete('/projects/{project}/aprendices/{aprendiz}', [ProjectIntegranteController::class, 'destroy'])
         ->name('project.aprendices.destroy');
-
-
 
     // -------------------------
     // Rutas de Aprendices
@@ -106,15 +99,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/projects/{project}/fases/{fase}', [ProjectController::class, 'showFase'])
         ->name('projects.fases.show');
 
-    //Rutas de account
+    // Rutas de account
     Route::get('/perfil/datos', [DataUserController::class, 'edit'])->name('data_users.edit');
     Route::post('/perfil/datos', [DataUserController::class, 'storeOrUpdate'])->name('data_users.store');
 
-    
+    // Rutas para asignación de roles a usuarios
+    Route::get('/container/director/create', [UserRoleController::class, 'index'])->name('container.director.create');
+    Route::post('/container/director/store', [UserRoleController::class, 'store'])->name('container.director.store');
+
+    // Ruta opcional para listar usuarios con roles asignados
+    Route::get('/users-with-roles', [UserRoleController::class, 'list'])->name('user-roles.list');
 
     Route::get('/dashboard', [dashboardController::class, 'index'])->name('dashboard');
 });
 
-
-
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

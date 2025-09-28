@@ -1,5 +1,4 @@
 <!-- Integrantes Section -->
-@if (auth()->user()->can('integrantes.index') || auth()->user()->can('integrantes.create'))
     <div class="mb-6">
         <h3 class="sidebar-section-title text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
             Integrantes
@@ -17,9 +16,14 @@
                     </a>
                 </li>
             @endcan
+            <!--
+            =============================================================
+            MENU PARA PODER AGREGAR UNA SECCION PARA CREAR LOS INTEGRANTES
+            DESCOMENTAR PARA PODER ACTIVARLO
+            =============================================================
             @can('integrantes.create')
                 <li>
-                    <a href="{{ route('aprendices.create') }}"
+                    <a href="{{ route('container.director.create') }}"
                         class="sidebar-item flex items-center px-4 py-3 text-sm rounded-lg {{ request()->routeIs('integrantes.create') ? 'active' : 'text-muted-foreground hover:text-foreground' }}">
                         <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -29,8 +33,9 @@
                     </a>
                 </li>
             @endcan
+            -->
         </ul>
-@endif
+
 
 <ul class="space-y-1">
     {{-- Crear asociación de aprendices a proyecto --}}

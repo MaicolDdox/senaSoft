@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+
 
 class ProjectIntegranteController extends Controller
 {
@@ -16,11 +18,12 @@ class ProjectIntegranteController extends Controller
 
         $query = Project::with(['integrantes', 'director', 'semillero']);
 
-        if ($user->hasRole('aprendiz_asociado')) {
+        // Modificación: agregar instructor_integrado junto con aprendiz_integrado
+        if ($user->hasRole(['aprendiz_integrado', 'instructor_integrado'])) {
             $query->whereHas('integrantes', function ($sub) use ($user) {
                 $sub->where('user_id', $user->id);
             });
-        } elseif ($user->hasRole('director_grupo')) {
+        } elseif ($user->hasRole('lider_semilleros')) {
             $query->where('director_id', $user->id);
         }
 
@@ -41,18 +44,17 @@ class ProjectIntegranteController extends Controller
     }
 
 
-
-
     public function create()
     {
-        // Traemos los proyectos y los aprendices
+        // Traemos los proyectos del director actual
         $projects = Project::where('director_id', auth()->id())->get();
 
+        // Modificación: traer usuarios con ambos roles
+        $integrantes = User::role(['aprendiz_integrado', 'instructor_integrado'])
+            ->with('roles') // Cargar roles para mostrar en la vista
+            ->get();
 
-        // Solo usuarios con rol "aprendiz_asociado"
-        $aprendices = User::role('aprendiz_asociado')->get();
-
-        return view('container.project_integrantes.create', compact('projects', 'aprendices'));
+        return view('container.project_integrantes.create', compact('projects', 'integrantes'));
     }
 
     public function store(Request $request)
@@ -65,32 +67,40 @@ class ProjectIntegranteController extends Controller
 
         $project = Project::findOrFail($request->project_id);
 
-        // buscamos el rol aprendiz_asociado
-        $rolAprendiz = \Spatie\Permission\Models\Role::where('name', 'aprendiz_asociado')->first();
-
-        if (!$rolAprendiz) {
-            return back()->withErrors(['rol' => 'El rol aprendiz_asociado no existe.']);
-        }
-
-        // Recorremos los aprendices seleccionados
+        // Recorremos los integrantes seleccionados
         foreach ($request->integrantes as $integranteId) {
-            // Verificamos si el aprendiz ya está en otro proyecto
+            $integrante = User::findOrFail($integranteId);
+            
+            // Verificamos si el integrante ya está en otro proyecto
             $proyectoExistente = \DB::table('project_user')
                 ->where('user_id', $integranteId)
                 ->where('project_id', '!=', $project->id)
                 ->first();
 
             if ($proyectoExistente) {
-                $aprendiz = \App\Models\User::find($integranteId);
                 return back()->withInput()
                     ->withErrors([
-                        'integrantes' => "El aprendiz {$aprendiz->name} ya está asociado a otro proyecto."
+                        'integrantes' => "El usuario {$integrante->name} ya está asociado a otro proyecto."
                     ]);
             }
 
-            // Asociamos el aprendiz al proyecto
+            // Determinar el rol del integrante
+            $rol = null;
+            if ($integrante->hasRole('aprendiz_integrado')) {
+                $rol = Role::where('name', 'aprendiz_integrado')->first();
+            } elseif ($integrante->hasRole('instructor_integrado')) {
+                $rol = Role::where('name', 'instructor_integrado')->first();
+            }
+
+            if (!$rol) {
+                return back()->withErrors([
+                    'integrantes' => "El usuario {$integrante->name} no tiene un rol válido para integrarse al proyecto."
+                ]);
+            }
+
+            // Asociamos el integrante al proyecto con su rol correspondiente
             $project->integrantes()->syncWithoutDetaching([
-                $integranteId => ['rol' => $rolAprendiz->id]
+                $integranteId => ['rol' => $rol->id]
             ]);
         }
 
@@ -98,12 +108,12 @@ class ProjectIntegranteController extends Controller
             ->with('success', 'Integrantes asociados correctamente al proyecto.');
     }
 
-    public function destroy($projectId, $aprendizId)
+    public function destroy($projectId, $integranteId)
     {
         $project = Project::findOrFail($projectId);
-        // Remueve la relación del aprendiz con el proyecto
-        $project->integrantes()->detach($aprendizId);
+        // Remueve la relación del integrante con el proyecto
+        $project->integrantes()->detach($integranteId);
 
-        return redirect()->back()->with('success', 'Aprendiz eliminado del proyecto correctamente.');
+        return redirect()->back()->with('success', 'Integrante eliminado del proyecto correctamente.');
     }
 }

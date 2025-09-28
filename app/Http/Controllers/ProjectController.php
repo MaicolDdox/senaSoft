@@ -19,7 +19,7 @@ class ProjectController extends Controller
 
         $query = Project::with(['semillero', 'director']);
 
-        if ($user->hasRole('director_grupo')) {
+        if ($user->hasRole('lider_semilleros')) {
             $query->where('director_id', $user->id);
         }
 

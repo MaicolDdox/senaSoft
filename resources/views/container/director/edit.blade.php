@@ -96,7 +96,7 @@
                                             d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                                     </svg>
                                 </div>
-                                <input name="password" type="password" id="password" required
+                                <input name="password" type="password" id="password" 
                                     autocomplete="new-password" placeholder="Crea una contraseña segura"
                                     class="input-focus w-full pl-10 pr-4 py-3 border border-border rounded-lg bg-background text-foreground placeholder-muted-foreground focus:outline-none" />
                                 @error('password')
@@ -119,7 +119,7 @@
                                     </svg>
                                 </div>
                                 <input name="password_confirmation" type="password" id="password_confirmation"
-                                    required autocomplete="new-password" placeholder="Confirma tu contraseña"
+                                    autocomplete="new-password" placeholder="Confirma tu contraseña"
                                     class="input-focus w-full pl-10 pr-4 py-3 border border-border rounded-lg bg-background text-foreground placeholder-muted-foreground focus:outline-none" />
                                 @error('password_confirmation')
                                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>

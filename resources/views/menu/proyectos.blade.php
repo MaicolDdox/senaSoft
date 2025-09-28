@@ -1,5 +1,5 @@
 <!-- Proyectos Section -->
-@if (auth()->user()->can('projects.index') || auth()->user()->can('projects.create'))
+
     <div class="mb-6">
         <h3 class="sidebar-section-title text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
             Proyectos
@@ -17,6 +17,11 @@
                     </a>
                 </li>
             @endcan
+            <!--
+            =============================================================
+            MENU PARA PODER AGREGAR UNA SECCION PARA CREAR LOS PROYECTOS
+            DESCOMENTAR PARA PODER ACTIVARLO
+            =============================================================
             @can('projects.create')
                 <li>
                     <a href="{{ route('projects.create') }}"
@@ -29,6 +34,7 @@
                     </a>
                 </li>
             @endcan
+            -->
         </ul>
     </div>
-@endif
+
