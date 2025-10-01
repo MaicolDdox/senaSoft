@@ -18,8 +18,8 @@ class Event extends Model
     ];
 
     // Un evento puede estar asociado a un proyecto
-    public function project()
-    {
-        return $this->belongsTo(Project::class);
-    }
+    //public function project()
+    //{
+    //    return $this->belongsTo(Project::class);
+    //}
 }

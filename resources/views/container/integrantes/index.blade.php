@@ -65,7 +65,7 @@
                             </div>
                         </form>
 
-                        <p class="text-sm text-muted-foreground">{{ $aprendices->total() }} Integrante en total</p>
+                        <p class="text-sm text-muted-foreground">{{ $users->total() }} Integrante en total</p>
                     </div>
                     <div class="flex items-center space-x-2 text-sm text-muted-foreground">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -93,9 +93,9 @@
 
                     {{-- **CAMBIO: agregué el id="IntegranteTable" para que el JS lo encuentre y reemplace su contenido** --}}
                     <tbody id="aprendicesTable" class="divide-y divide-border">
-                        @forelse ($aprendices as $index => $aprendiz)
+                        @forelse ($users as $index => $aprendiz)
                             <tr class="hover:bg-muted/30 transition-colors duration-150">
-                                <td class="px-6 py-4 text-sm text-muted-foreground">{{ $aprendices->firstItem() + $index }}
+                                <td class="px-6 py-4 text-sm text-muted-foreground">{{ $users->firstItem() + $index }}
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex items-center space-x-3">
@@ -193,9 +193,9 @@
         </div>
 
         {{-- **CAMBIO: agregué id="pagination" alrededor de los links para que el JS lo encuentre** --}}
-        @if ($aprendices->hasPages())
+        @if ($users->hasPages())
             <div id="pagination" class="mt-6">
-                {{ $aprendices->withQueryString()->links() }}
+                {{ $users->withQueryString()->links() }}
             </div>
         @endif
 

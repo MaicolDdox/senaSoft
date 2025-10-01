@@ -23,13 +23,13 @@ class Semillero extends Model
 
     protected static function booted()
 {
-    static::created(function ($semillero) {
-        Event::create([
-            'titulo' => "Semillero: {$semillero->titulo}",
-            'descripcion' => "Descripccion: {$semillero->descripcion}",
-            'fecha_inicio' => $semillero->created_at->format('Y-m-d'),
-        ]);
-    });
+    //static::created(function ($semillero) {
+    //    Event::create([
+    //        'titulo' => "Semillero: {$semillero->titulo}",
+    //        'descripcion' => "Descripccion: {$semillero->descripcion}",
+    //        'fecha_inicio' => $semillero->created_at->format('Y-m-d'),
+    //    ]);
+    //});
 
     static::deleted(function ($semillero) {
         // Borrar eventos que tengan proyectos de este semillero
@@ -40,7 +40,7 @@ class Semillero extends Model
         }
 
         // Si quieres que el semillero mismo también tenga un evento propio
-        Event::where('titulo', "Semillero: {$semillero->titulo}")->delete();
+        //Event::where('titulo', "Semillero: {$semillero->titulo}")->delete();
     });
 }
 

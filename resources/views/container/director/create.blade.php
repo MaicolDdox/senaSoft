@@ -86,7 +86,7 @@
                         <p class="text-muted-foreground">Todos los usuarios del sistema ya tienen roles asignados.</p>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <a href="{{ route('directores.index') }}"
+                        <a href="{{ route('dashboard') }}"
                             class="px-6 py-3 bg-muted hover:bg-muted/80 text-muted-foreground rounded-lg font-medium transition-all duration-200 flex items-center space-x-2 border border-border">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

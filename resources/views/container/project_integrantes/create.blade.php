@@ -155,6 +155,9 @@
         </div>
     </div>
 
+    <!-- TomSelect JS -->
+<script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
+
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             // Select para proyectos (solo uno)
@@ -211,24 +214,22 @@
                         </div>`;
                     },
                     item: function(data, escape) {
-                        const text = data.text;
-                        const cleanName = text.split(' - ')[0];
-                        const isAprendiz = text.includes('(Aprendiz)');
-                        const badgeClass = isAprendiz ? 'bg-blue-100 text-blue-600' : 'bg-green-100 text-green-600';
-                        const roleText = isAprendiz ? 'A' : 'I'; // A para Aprendiz, I para Instructor
-                        
-                        return `<div class="flex items-center space-x-2">
-                            <span class="text-sm">${roleIcon}</span>
-                            <span class="px-1.5 py-0.5 text-xs rounded-full font-medium ${badgeClass}">${roleText}</span>
-                            <span class="text-sm">${escape(cleanName)}</span>
-                        </div>`;
+                    const text = data.text;
+                    const cleanName = text.split(' - ')[0];
+                    const isAprendiz = text.includes('(Aprendiz)');
+                    const badgeClass = isAprendiz ? 'bg-blue-100 text-blue-600' : 'bg-green-100 text-green-600';
+                    const roleText = isAprendiz ? 'A' : 'I'; 
+
+                    return `<div class="flex items-center space-x-2">
+                        <span class="px-1.5 py-0.5 text-xs rounded-full font-medium ${badgeClass}">${roleText}</span>
+                        <span class="text-sm">${escape(cleanName)}</span>
+                    </div>`;
                     }
                 }
             });
         });
     </script>
 
-    <!-- TomSelect JS -->
-    <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
+   
 
 @endsection

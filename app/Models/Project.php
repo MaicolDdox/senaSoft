@@ -57,23 +57,23 @@ class Project extends Model
         return $this->hasMany(Event::class);
     }
 
-    protected static function booted()
-    {
-        static::created(function ($project) {
-            Event::create([
-                'titulo' => "Proyecto: {$project->nombre}",
-                'descripcion' => "Descripccion: {$project->descripcion}",
-                'fecha_inicio' => $project->created_at->format('Y-m-d'),
-                'fecha_fin' => $project->end_date,
-                'project_id' => $project->id,
-            ]);
-        });
+    //protected static function booted()
+    //{
+    //    static::created(function ($project) {
+    //        Event::create([
+    //            'titulo' => "Proyecto: {$project->nombre}",
+    //            'descripcion' => "Descripccion: {$project->descripcion}",
+    //            'fecha_inicio' => $project->created_at->format('Y-m-d'),
+    //            'fecha_fin' => $project->end_date,
+    //            'project_id' => $project->id,
+    //        ]);
+    //    });
 
-        static::deleted(function ($project) {
-            // Borrar los eventos asociados al proyecto
-            $project->events()->each(function ($event) {
-                $event->delete();
-            });
-        });
-    }
+    //    static::deleted(function ($project) {
+    //        // Borrar los eventos asociados al proyecto
+    //        $project->events()->each(function ($event) {
+    //            $event->delete();
+    //        });
+    //    });
+    //}
 }

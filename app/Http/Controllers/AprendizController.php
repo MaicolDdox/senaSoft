@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Validation\Rules;
 
 class AprendizController extends Controller
 {
@@ -14,16 +13,18 @@ class AprendizController extends Controller
     {
         $q = trim($request->input('q', ''));
 
-        $aprendices = User::role('aprendiz_integrado')
+        $users = User::role(['aprendiz_integrado', 'instructor_integrado']) // varios roles
             ->when($q, function ($query) use ($q) {
-                $query->where('name', 'like', "%{$q}%")
-                    ->orWhere('email', 'like', "%{$q}%");
+                $query->where(function ($q2) use ($q) {
+                    $q2->where('name', 'like', "%{$q}%")
+                        ->orWhere('email', 'like', "%{$q}%");
+                });
             })
             ->latest('created_at')
             ->paginate(10)
             ->appends(['q' => $q]);
 
-        return view('container.integrantes.index', compact('aprendices', 'q'));
+        return view('container.integrantes.index', compact('users', 'q'));
     }
 
     public function create()
